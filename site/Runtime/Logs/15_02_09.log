@@ -1,0 +1,8 @@
+[ 2015-02-09T15:52:48+08:00 ] WEB_LOG_DEBUG: （参数：s=Platlogin/relation/id/7&bindname=toemore&username=toemore&email=827933213@qq.com&mobile=13011221122&time=1423467978&sign=09b790c53b7df52a6069ca052f454e89）
+[ 2015-02-09T16:34:25+08:00 ] WEB_LOG_DEBUG: （参数：s=Platlogin/relation/id/7&bindname=yanweikang&username=kang&email=450214208@qq.com&mobile=13246639052&time=1423470821&sign=0a44376827d272fec8f730e7870f85bc）
+[ 2015-02-09T17:42:44+08:00 ] ERR:  请求地址：http://121.79.128.49:8080/ad/wangtou/record?time=1423474962&sign=ce75314f17c565f6e3baf0d0e55d9373
+[ 2015-02-09T17:45:27+08:00 ] ERR:  请求地址：http://121.79.128.49:8080/ad/wangtou/record?time=1423475126&sign=2e61064a252b7b37002276772a28a6db
+[ 2015-02-09T17:46:50+08:00 ] ERR:  请求地址：http://121.79.128.49:8080/ad/wangtou/record?time=1423475208&sign=9420019dabce225f820d6a1382db6eaa
+[ 2015-02-09T17:49:17+08:00 ] ERR:  请求地址：http://121.79.128.49:8080/ad/wangtou/record?time=1423475354&sign=534236d67023bb89cf376cc549ae6eb4
+[ 2015-02-09T17:54:20+08:00 ] ERR:  请求地址：http://121.79.128.49:8080/ad/wangtou/record?time=1423475659&sign=4f46fb3492cdcd0619f4943fd0fc0c6e
+[ 2015-02-09T17:58:24+08:00 ] ERR:  请求地址：http://121.79.128.49:8080/ad/wangtou/record?time=1423475899&sign=27b7a5fd6ecd1c9bb609ff45f2ea8e0d

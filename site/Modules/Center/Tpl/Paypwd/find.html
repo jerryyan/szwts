@@ -1,0 +1,100 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	
+        <h2>安全信息</h2>        		
+		<div class="img_kj">
+			<img src="/static/images/center/bdsj_img.jpg" width="700" height="33" />
+		</div>
+		<div class="text_yx">
+			<a style="margin-left:133px; color:#666;">验证手机号码</a>
+			<a style=" margin-left:55px; color:#666;">重设提现密码</a>
+			<a style="margin-left:75px; color:#666;">成功</a>
+		</div>
+        <div class="rznr">
+			<form id="findPayPwdForm" action="__GROUP__/Paypwd/resetup" method="post" class="form_nr">
+				<div class="input_nr" style="margin-bottom:20px;">
+					<span style="width:100px; text-align:right;">绑定的手机号码</span><span>{$tempData['user_result']['phone']}</span>
+				</div>
+                <div class="input_nr">
+                	<span style="width:100px; text-align:right;">
+                		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:18px;">*</a>手机验证码
+                	</span>
+                	<input id="code" name="code" type="text" class="input_text" maxlength="6" />
+                    <input id="sendCode" class="input_text_t"  type="button" />
+                	<div id="send_code_status" class="txmm_btn" style="display:none;"></div>
+                </div>
+                <span id="js_verifycode_tips" class="q_text_yx" style="text-indent:6px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			   	<input id="findPayPwdBtn" name="findPayPwdBtn" type="button" value="" class="yzsj_xb yx_btn" />
+			</form>
+        </div> 
+       	
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#sendCode").click(function(){
+		$.ajax({
+			url: '__GROUP__/Paypwd/sendCode',
+			type: 'post',
+			dataType: 'json',
+			beforeSend: function(){
+				$("#sendCode").attr('disabled', true);
+			},
+			success: function(p){
+				$("#sendCode").attr('disabled', false);
+				alert(p.msg);
+				if(p.state==1){
+					send.start();
+				}else{
+					return false;
+				}			
+			}
+		});
+	});
+	$("#code").focusin(function(){
+		$("#js_verifycode_tips").css({'color':'#666'}).text('请输入手机收到的验证码');
+	}).focusout(function(){
+		var _this = $(this),
+			v = _this.val();
+		checkcode(v);
+	});
+	$("#findPayPwdBtn").click(function(){
+		var code = $("#code").val();
+		if(checkcode(code)){
+			$("#findPayPwdForm").submit();
+		}
+	});
+});
+function checkcode(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_verifycode_tips").css({'color':'#f00'}).text('验证码不能为空');
+		return false;
+	}else if(len==6){
+		$("#js_verifycode_tips").css({'color':'#f00'}).text('');
+		return true;
+	}else{
+		$("#js_verifycode_tips").css({'color':'#f00'}).text('验证码长度必须为六位');
+		return false;
+	}
+}
+</script>
+</body>
+</html>

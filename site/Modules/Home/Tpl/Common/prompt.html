@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__ROOT__/static/css/home/login.css" rel="stylesheet" type="text/css" />
+<title>消息提示  - 网投所</title>
+</head>
+
+<body>
+<div class="heard">
+	<div class="heard_01"><span style="margin-right:10px;">服务专线：00000000</span>
+    <span>关注我们</span><span style="float:right; font-size:13px;"><a href="/Register/index">免费注册</a>&nbsp;|&nbsp;<a href="/Login/index">立即登录</a></span>
+    </div>
+</div>
+
+<div class="logo">
+    <div class="logo_01">
+    <a href="/"><img src="/static/images/home/logo.png" height="60" /></a>
+    <span>已有网投所账号？ <a style="color:#F00;" href="/Login/index">立即登录</a></span>
+    </div>
+</div>
+
+<!-- 提示 start -->
+<div class="l_center cr">
+	<div class="l_center_01">
+	    <div class="cuowu" style="text-align:center;margin-top:60px; float:left; width:960px;">
+	    	<span class="{$tempData['infoType']}" title="错误">{$tempData['promptInfo']}</span>
+			<div class="fanhui"><a href="{$tempData['returnUrl']}"><span>{$tempData['returnText']}</span></a></div>
+    	</div>
+    </div>
+</div>
+<!-- 提示 end -->
+
+
+<!--  引入底部   start -->
+<include file="Common/footer_login" />
+<!--  引入底部   end -->
+
+</body>
+</html>

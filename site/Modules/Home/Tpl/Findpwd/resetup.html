@@ -1,0 +1,107 @@
+<include file="Common/header_login" />
+<!--  引入头部   end -->
+
+
+<!-- 设置密码   start -->
+<div class="l_center cr">
+	<div class="l_center_01">   
+		<h4>重置密码：请输入新的登录密码</h4> 
+		<form id="setpwd_form" action="/Findpwd/finish" method="post">   
+		<ul class="ul_li" style="background:none; margin-top:30px; padding-left:280px;">
+		    <li>
+		      	<span class="ul_span">新密码</span>
+		      	<div class="c_li_1" style="width:240px;">
+		      		<input id="newpwd" name="newpwd" style="font-size:14px; width:230px;" type="password" maxlength="20" />
+		      	</div>
+		        <span id="js_newpwd_tips" class="ul_s" style="width:auto;"></span>
+		    </li>	               
+	      	<li>
+	      		<span class="ul_span">确认新密码</span>
+	      		<div class="c_li_1" style="width:240px;">
+	      			<input id="newpwd_confirm" name="newpwd_confirm" style="font-size:14px; width:230px;" type="password" maxlength="20" />
+	      		</div>
+	           	<span id="js_newpwd_confirm_tips" class="ul_s"></span>
+	        </li>         
+	     	<li class="l_denglu1">
+	     		<input id="uid" name="uid" type="hidden" value="{$tempData['uid']}" />
+	     		<input id="setpwd_btn" style="cursor:pointer; background:url(/static/images/home/login/t_88.png) no-repeat;" type="button" />
+			</li>
+	    </ul> 
+	    </form>
+	</div>
+</div>
+<!-- 设置密码   end -->
+
+<!--  引入底部   start -->
+<include file="Common/footer_login" />
+<!--  引入底部   end -->
+
+<script type="text/javascript" src="__ROOT__/static/js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#newpwd").focusin(function(){
+		$("#js_newpwd_tips").css({'color':'#999'}).text('6-20位字符，建议使用字母、数字、符号组合').show();
+	}).focusout(function(){
+		var _this = $(this),
+		v = _this.val();
+		checkUpwd(v);
+	});
+	$("#newpwd_confirm").focusin(function(){
+		$("#js_newpwd_confirm_tips").css({'color':'#999'}).text('两次密码输入必须一致').show();
+	}).focusout(function(){
+		var _this = $(this),
+		v = _this.val();
+		checkUpwdConfirm(v);
+	});
+	$("#setpwd_btn").click(function(){
+		var newpwd = $("#newpwd").val(),
+			newpwd_confirm = $("#newpwd_confirm").val();
+		if(checkUpwd(newpwd) && checkUpwdConfirm(newpwd_confirm)){
+			$("#setpwd_form").submit();
+			$("#newpwd, #newpwd_confirm").val('');
+		}
+	});
+});
+function checkUpwd(v){
+	var val = $.trim(v),
+		len = val.length;
+	if(len==0){
+		$("#js_newpwd_tips").css({'color':'#f00'}).text('请输入密码').show();
+		return false;
+	}else if(len<6){
+		$("#js_newpwd_tips").css({'color':'#f00'}).text('密码不能少于6位').show();
+		return false;
+	}else if(len>20){
+		$("#js_newpwd_tips").css({'color':'#f00'}).text('密码不能大于20位').show();
+		return false;
+	}else{
+		$("#js_newpwd_tips").css({'color':'#f00'}).text('').hide();
+		return true;
+	}
+}
+function checkUpwdConfirm(v){
+	var val = $.trim(v),
+		len = val.length;
+		newpwd = $("#newpwd").val();	
+	if(len==0){
+		$("#js_newpwd_confirm_tips").css({'color':'#f00'}).text('请确认密码').show();
+		return false;
+	}else if(len<6){
+		$("#js_newpwd_confirm_tips").css({'color':'#f00'}).text('确认密码不能少于6位').show();
+		return false;
+	}else if(len>20){
+		$("#js_newpwd_confirm_tips").css({'color':'#f00'}).text('确认密码不能大于20位').show();
+		return false;
+	}else{
+		if(v==newpwd){
+			$("#js_newpwd_confirm_tips").css({'color':'#f00'}).text('').hide();
+			return true;
+		}else{
+			$("#js_newpwd_confirm_tips").css({'color':'#f00'}).text('两次密码输入不一致').show();
+			return false;
+		}
+	}
+}
+</script>
+</body>
+</html>

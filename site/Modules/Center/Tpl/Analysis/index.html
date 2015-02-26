@@ -1,0 +1,52 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+ 
+	<div class="content_right">
+	
+		<div class="zdtb_title">投资分析</div>      
+		<div class="scxx_bg" style="margin-left:10px;">
+			<table border="0">
+				<tr class="tr_01">
+					<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">序号</td>
+                    <td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">所在平台</td>
+                    <td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">投资总额</td>
+                    <td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">投资比例</td>
+                    <td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">综合收益</td>
+				</tr>
+				<if condition='($count gt 0)'>
+				<volist name="list" id="v" key="k"> 	 	 	 	 	 	 	
+                <tr class="tr_01">
+                    <td class="t_2" align="center" valign="middle">{$k}</td>
+                    <td class="t_2" align="center" valign="middle">{$v['platform_name']}</td>
+                    <td class="t_2" align="center" valign="middle">{$v['sum_amount']}</td>
+                    <td class="t_2" align="center" valign="middle">{$v['scale']}%</td>
+                    <td class="t_2" align="center" valign="middle">{$v['sum_rate']}</td>
+				</tr> 
+				</volist> 
+				<else />
+				<tr class="tr_01"><td class="t_2" colspan="5">暂无数据</td></tr>
+				</if>        
+			</table>
+		</div>	
+			 		
+	</div>
+	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+
+</body>
+</html>

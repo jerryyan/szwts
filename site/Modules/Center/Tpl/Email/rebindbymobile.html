@@ -1,0 +1,135 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	
+        <h2>安全信息</h2>       
+        <div class="img_kj">
+        	<img src="/static/images/center/bdyx_img.jpg" width="700" height="33" />
+        </div>
+        <div class="text_yx">
+        	<a style="margin-left:145px; color:#666;">验证手机</a>
+        	<a style=" margin-left:78px; color:#666;">填写邮箱</a> 
+        	<a style="margin-left:72px; color:#666;">验证新邮箱</a> 
+        	<a style="margin-left:80px; color:#666;">成功</a>
+        </div>
+        <div class="rznr">
+			<form id="reBindByMobileForms" action="__GROUP__/Email/inputbymobile" method="post" class="form_nr">
+			    <div class="input_nr" style="margin-bottom:20px;">
+			    	<span style="width:90px; text-align:right;">
+			    		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:22px;">*</a>原手机号
+			    	</span>
+			    	<span>{$tempData['user_result']['phone_hide']}</span>
+			    </div>
+			    <div class="input_nr">
+			    	<span style="width:90px; text-align:right;">
+			    		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:8px;">*</a>手机验证码
+			    	</span>
+			    	<input id="code" name="code" type="text" class="input_text" maxlength="6" />
+			    	<img id="sendCode" src="/static/images/center/yx_img.jpg" width="100" height="23" style="margin-left:4px;cursor:pointer;"/>
+			   		<div id="send_code_status" class="txmm_btn" style="display:none;"></div>
+			   	</div>
+                <span id="js_phonecode_tips" class="q_text_yx"></span>
+                <div class="input_nr">
+                	<span style="width:90px; text-align:right;">
+                		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:8px;">*</a>身份证号码
+                	</span>
+                	<input id="card_id" name="card_id" type="text" class="input_text" maxlength="18" />
+                </div>
+                <span id="js_cardid_tips" class="q_text_yx"></span>
+			  	<input id="reBindByMobileBtn" type="button" value="" class="yzsj_xb yx_btn" />
+			  	<span id="js_submit_tips" class="q_text_yx"></span>
+			</form>
+        </div>
+       	
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#sendCode").click(function(){
+		$.ajax({
+			url: '__GROUP__/Email/sendSmsForReBind',
+			type: 'post',
+			dataType: 'json',
+			beforeSend: function(){
+				$("#sendCode").attr('disabled', true);
+			},
+			success: function(p){
+				$("#sendCode").attr('disabled', false);
+				if(p.state==1){
+					layer.alert(p.msg, 1);
+					send.start();
+				}else{
+					layer.alert(p.msg, 8);
+					return false;
+				}			
+			}
+		});
+	});
+	$("#code").focusin(function(){
+		$("#js_phonecode_tips").css({'color':'#666'}).text('请输入手机获取到的验证码');
+	}).focusout(function(){
+		var _this = $(this),
+			v = _this.val();
+		checkCode(v);
+	});
+	$("#card_id").focusin(function(){
+		$("#js_cardid_tips").css({'color':'#666'}).text('请正确输入您的二代身份证号码');
+	}).focusout(function(){
+		var _this = $(this),
+			v = _this.val();
+		checkCard(v);
+	});
+	$("#reBindByMobileBtn").click(function(){
+		var code = $("#code").val(),
+			card_id = $("#card_id").val();
+		if(checkCode(code) && checkCard(card_id)){
+			$("#reBindByMobileForms").submit();
+			//$("#reBindByMobileBtn").attr("disabled", true);
+		}
+	});
+});
+function checkCode(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_phonecode_tips").css({'color':'#f00'}).text('验证码不能为空');
+		return false;
+	}else if(len==6){
+		$("#js_phonecode_tips").text('');
+		return true;
+	}else{
+		$("#js_phonecode_tips").css({'color':'#f00'}).text('验证码长度必须为6位');
+		return false;
+	}
+}
+function checkCard(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_cardid_tips").css({'color':'#f00'}).text('身份证号码不能为空');
+		return false;
+	}else if(!card_patrn.test(v)){
+		$("#js_cardid_tips").css({'color':'#f00'}).text('身份证号码格式不正确');
+		return false;
+	}else{
+		$("#js_cardid_tips").text('');
+		return true;
+	}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+ 
+	<div class="content_right">
+    	<h2>资金明细</h2>
+        <div class="scxx_bg" style="margin-left:10px;">
+        
+	        <div class="zhanghu">
+	        	<span>账户总额:<strong style="color:#ff6600; font-size:20px; font-family:'微软雅黑'";>{$tempData['total']}</strong>元</span>  
+	        	<span>可用余额:<strong style="color:#2ABF55; font-size:20px; font-family:'微软雅黑'";>{$tempData['use_money']}</strong>元</span>  
+	        	<span>冻结金额:<strong style="color:#D41F55; font-size:20px; font-family:'微软雅黑'";>{$tempData['no_use_money']}</strong>元</span>  
+	        </div>
+	        
+	        <table border="0">
+				<tr class="tr_01">
+					<td width="56" height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">类型</td>
+	                <td width="95"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">操作金额</td>
+	                <td width="77"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">总金额</td>
+	                <td width="94"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">可用金额</td>
+	                <td width="79"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">冻结金额</td>
+	                <td width="77"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">记录时间</td>
+	                <td width="121"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">备注信息</td>
+				</tr> 	 
+				<if condition='($tempData[num] gt 0)'>	 
+				<volist name="list" id="v">	 	 	 	 	
+				<tr class="tr_01">							
+	                	<td class="t_2" align="center" valign="middle">{$v['type_name']}</td>
+	                    <td class="t_2" align="center" valign="middle">¥{$v['money']}</td>
+	                    <td class="t_2" align="center" valign="middle">¥{$v['total']}</td>
+	                    <td class="t_2" align="center" valign="middle">¥{$v['use_money']}</td>
+	                    <td class="t_2" align="center" valign="middle">¥{$v['no_use_money']}</td>
+	                    <td class="t_2" align="center" valign="middle">{$v['addtime']|default=''|date='Y-m-d H:i', ###}</td>
+	                    <td class="t_2" align="center" valign="middle">{$v['remark']}</td>
+				</tr>
+				</volist>
+				<else />
+				<tr class="tr_01">
+					<td class="t_2" colspan="7">暂无数据</td>
+				</tr>
+				</if>
+			</table>
+		</div>
+	
+		<div class="pagelist">
+			{$page}
+		</div> 
+				 		
+	</div>
+</div>
+
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+
+</body>
+</html>

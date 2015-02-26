@@ -1,0 +1,64 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	
+        <h2>安全信息</h2> 
+        <div class="img_kj">
+        	<img src="/static/images/center/bdyx_img.jpg" width="700" height="33" />
+        </div>
+        <div class="text_yx">
+        	<a style="margin-left:135px; color:#666;">验证当前邮箱</a>
+        	<a style=" margin-left:53px; color:#666;">填写新邮箱</a> 
+        	<a style="margin-left:65px; color:#666;">验证新邮箱</a> 
+        	<a style="margin-left:80px; color:#666;">成功</a>
+        </div>     
+        <div class="bdyx_dy">
+			<div class="bz_y"><p>请到邮箱<a style="color:#ff0103;">{$tempData['user_result']['email_hide']}</a>查收确认邮件，单击相应链接完成验证（24小时内有效）</p></div>
+       		<div class="bz_e">
+            	<p>未收到邮件？</p>
+                <p>请先检查是否在垃圾邮件中</p>
+                <p>10分钟内未收到验证邮件，请点击<input class="input_text_a" id="reSendEmail"></p>
+            </div>
+        </div>         		
+       	
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#reSendEmail").click(function(){
+		var obj = {};
+		obj.check = "old_email";
+		$.ajax({
+			url: '__GROUP__/Email/sendEmail',
+			type: 'post',
+			data: obj,
+			dataType: 'json',
+			beforeSend: function(){
+				$("#reSendEmail").attr('disabled', true);
+			},
+			success: function(p){
+				$("#reSendEmail").attr('disabled', false);
+				alert(p.msg);			
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>

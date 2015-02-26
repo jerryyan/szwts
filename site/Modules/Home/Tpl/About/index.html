@@ -1,0 +1,46 @@
+<include file="Common/header" />
+<!--  引入头部   end -->
+
+<!-- 内容区 开始-->
+<div id="content">
+	<div class="leftsidebar">
+    	<h3><a href="javascript:void(0);">关于我们</a></h3>
+        <ul>
+        <volist name="menus" id="v">
+			<li><a href="__URL__/index/id/{$v.id}.html" class="<if condition='($v[id] eq $modules_result[id])'>mover</if>">{$v.name}</a></li>
+		</volist>
+        </ul>
+	</div>
+	<div class="rightcontent">
+    	<div class="about_title">{$modules_result['name']|default=''}</div>
+    	
+    	<if condition='($modules_result[is_list] eq 0)'>	
+	        <div class="about_content">
+	        	{$content|default=''}
+	        </div>       
+        <else />        
+	        <div class="news_content">
+	        	<ul>
+	        	<volist name="list" id="v">
+	            	<li><a href="__URL__/details/id/{$v.id}.html">{$v.title}</a> <span>{$v.addtime|date='Y-m-d', ###}</span></li>
+	            </volist>
+	            </ul>
+	        </div>
+	        <div class="last_list2">
+	       		{$page}
+			</div>		
+        </if>
+        
+    </div>
+</div>
+<!-- 内容区 结束-->
+
+<div class="clear"></div>
+
+
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+
+</body>
+</html>

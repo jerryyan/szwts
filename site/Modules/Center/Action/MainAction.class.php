@@ -1,0 +1,398 @@
+<?php
+
+class MainAction extends Action {
+
+    var $users;
+    var $admin_group;
+
+    //权限控制
+    public function __construct() {
+        parent::__construct();
+        $users = $_SESSION['Home_user'];
+        if (empty($users)) {
+            $this->redirect("/Login");
+            die();
+        }
+        $user_result = M("User")->field("email_status,phone_status")->find($users['user_id']);
+        if ($user_result['email_status'] == 0 && $user_result['phone_status'] == 0 && ACTION_NAME != 'loginout') {
+            $this->redirect("/Register/verify");
+        }
+        $this->users = $users;
+        $this->assign("users", $users);
+        $menu = $this->manageMenu();
+        $this->assign("menu", $menu);
+        //网站后台分组名称
+        $this->admin_group = C("ADMIN_GROUP");
+    }
+
+    //404错误
+    public function _empty() {
+        header('HTTP/1.1 404 Not Found');
+        $this->display("Common/404");
+    }
+
+    //左边菜单栏样式控制
+    protected function manageMenu() {
+        $module_name = strtolower(MODULE_NAME);
+        $menuArray = array(
+            'safeinfo',
+            'realname',
+            'loginpwd',
+            'mobile',
+            'email',
+            'paypwd',
+            'platform',
+            'bankinfo',
+            'myinvest',
+            'analysis',
+            'account',
+            'cash',
+            'invitation'
+        );
+        $menu_nums = array(
+            'safeinfo' => 1,
+            'realname' => 1,
+            'loginpwd' => 1,
+            'mobile' => 1,
+            'email' => 1,
+            'paypwd' => 1,
+            'platform' => 2,
+            'bankinfo' => 3,
+            'myinvest' => 4,
+            'analysis' => 5,
+            'account' => 6,
+            'cash' => 7,
+            'invitation' => 8
+        );
+        if (in_array($module_name, $menuArray)) {
+            return $menu_nums[$module_name];
+        }
+    }
+
+    //检测每天每个手机号码的短信发送次数
+    protected function checkSendNum($phone) {
+        $date = strtotime(date('Y-m-d'));
+        $phone_sendlog_result = M("Phone_sendlog")->where(array('phone' => $phone, 'status' => 1, 'send_date' => $date))->select();
+        if (!empty($phone_sendlog_result) && count($phone_sendlog_result) >= 3) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    //发送手机短信（单发）
+    /*
+      protected function sendSmsOne($data){
+      $gwUrl = 'http://api.duanxin.cm/';
+      $smsAction = 'action=send';
+      $userName = C("SMS_USERNAME");
+      $passWord = C("SMS_PASSWORD");
+
+      $phone_data = array(
+      'user_id' => empty($data['user_id'])?0:$data['user_id'],
+      'phone' => $data['phone'][0],
+      'content' => $data['content'],
+      'status' => 0,
+      'send_date' => strtotime(date('Y-m-d')),
+      'addtime' => time(),
+      'addip' => get_client_ip()
+      );
+      $fileurl = $gwUrl.'?'.$smsAction.'&username='.$userName.'&password='.$passWord.'&phone='.$phone_data['phone'].'&content='.urlencode($phone_data['content']).'&encode=utf8';
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $fileurl);        	//设置url
+      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);   	//设置开启重定向支持
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+      $output = curl_exec($ch);  							//执行
+      curl_close($ch);
+      $info = strip_tags($output);
+      if($info==100){
+      $phone_data['status'] = 1;
+      M("Phone_sendlog")->add($phone_data);
+      }else{
+      M("Phone_sendlog")->add($phone_data);
+      }
+      return $info==100?0:1;
+      }
+     */
+
+
+    //易信通发送手机短信（单发）
+
+    protected function sendSmsOne($data) {
+        $gwUrl = 'http://119.145.9.12/sendSMS.action';
+        $eID = C("SMS_eID");
+        $userName = C("SMS_USERNAME");
+        $passWord = C("SMS_PASSWORD");
+
+        $phone_data = array(
+            'user_id' => empty($data['user_id']) ? 0 : $data['user_id'],
+            'phone' => $data['phone'][0],
+            'content' => $data['content'],
+            'status' => 0,
+            'send_date' => strtotime(date('Y-m-d')),
+            'addtime' => time(),
+            'addip' => get_client_ip()
+        );
+        $params = "enterpriseID=$eID&loginName=$userName&password=$passWord&content=" . urlencode($phone_data['content']) . "&mobiles={$phone_data['phone']}";
+        $data = http($gwUrl, $params, "POST");
+        $parser = xml_parser_create();
+        xml_parse_into_struct($parser, $data, $values, $index);
+        xml_parser_free($parser);
+        if ($values[1]['tag'] == "RESULT") {
+            $info = $values[1]['value'];
+        }
+
+        if ($info == 0) {
+            $phone_data['status'] = 1;
+            M("Phone_sendlog")->add($phone_data);
+        } else {
+            M("Phone_sendlog")->add($phone_data);
+        }
+        return $info == 0 ? 0 : 1;
+    }
+
+    //发送邮件
+    protected function sendEmailOne($data) {
+        $user_sendemail_log_data = array(
+            'module' => $data['module'], //操作模块
+            'user_id' => isset($data['user_id']) ? $data['user_id'] : 0,
+            'email' => $data['email'], //邮件发送的邮箱
+            'title' => isset($data['title']) ? $data['title'] : '系统信息', //邮件发送的标题	
+            'msg' => isset($data['msg']) ? $data['msg'] : '系统信息', //邮件发送的内容
+            'addtime' => isset($data['addtime']) ? $data['addtime'] : '',
+            'addip' => isset($data['addip']) ? $data['addip'] : ''
+        );
+        include("./mail/phpmailer/class.phpmailer.php");
+        $mail = new PHPMailer();
+        $mail->AddAddress($user_sendemail_log_data['email']);
+
+        $body = eregi_replace("[\]", '', $user_sendemail_log_data['msg']);
+        $mail->CharSet = 'utf-8';
+        $mail->IsSMTP();
+        # 必填，SMTP服务器是否需要验证，true为需要，false为不需要      	
+        $mail->SMTPAuth = true;
+        # 必填，设置SMTP服务器
+        $mail->Host = 'smtp.exmail.qq.com';
+        # 必填，开通SMTP服务的邮箱；任意一个163邮箱均可
+        $mail->Username = 'smile@wdzx.com';
+        # 必填， 以上邮箱对应的密码
+        $mail->Password = 'wdzx573412';
+        # 必填，发件人Email
+        $mail->From = 'smile@wdzx.com';
+        # 必填，发件人昵称或姓名
+        $mail->FromName = '网投所';
+        # 必填，邮件标题（主题）
+        $mail->Subject = $user_sendemail_log_data['title'];
+        # 可选，纯文本形势下用户看到的内容
+        $mail->AltBody = "";
+        # 自动换行的字数
+        $mail->WordWrap = 50;
+        $mail->MsgHTML($body);
+        # 回复邮箱地址
+        $mail->AddReplyTo($mail->From, $mail->FromName);
+        $mail->IsHTML(true);
+        $state = 0;
+        if ($mail->Send()) {
+            $state = 1;
+        }
+        $user_sendemail_log_data['status'] = $state;
+        M("User_sendemail_log")->add($user_sendemail_log_data);
+        return $state;
+    }
+
+    //发送手机短信（验证码）
+    protected function sendSms($obj) {
+        $o = new stdClass();
+        $o->state = 0;
+        $o->msg = "";
+        switch ($obj->type) {
+            default://无需绑定手机号码
+                $phone = $obj->phone;
+                $phone_len = mb_strlen($phone, 'utf-8');
+                if ($phone_len != 11) {
+                    $o->msg = '手机号码格式不正确';
+                    return $o;
+                }
+                $user_result = M("User")->field("user_id")->where("phone='%s' and phone_status=1", $phone)->find();
+                if (!empty($user_result)) {
+                    $o->msg = "此手机号码已被占用";
+                    return $o;
+                }
+                break;
+            case 1://需要绑定手机号码
+                $user_result = M("User")->field("phone")->where("user_id='%d' and phone_status=1", $this->users['user_id'])->find();
+                if (!empty($user_result)) {
+                    $phone = $user_result['phone'];
+                } else {
+                    $o->msg = '请先绑定手机号码';
+                    return $o;
+                }
+                break;
+            case 2://无需绑定手机号码（更换手机）
+                $phone = $obj->phone;
+                $phone_len = mb_strlen($phone, 'utf-8');
+                if ($phone_len != 11) {
+                    $o->msg = '手机号码格式不正确';
+                    return $o;
+                }
+                $user_result = M("User")->field("user_id")->where("phone='%s' and phone_status=1", $phone)->find();
+                if (!empty($user_result)) {
+                    if ($this->users['user_id'] != $user_result['user_id']) {
+                        $o->msg = "此手机号码已被占用";
+                        return $o;
+                    } else {
+                        $o->msg = "新手机号码不能和原有手机号码一致";
+                        return $o;
+                    }
+                }
+                break;
+        }
+        $check = $this->checkSendNum($phone);
+        if ($check > 0) {
+            $o->msg = '您的操作次数已到，如有疑问请联系客服';
+            return $o;
+        }
+        $code = getRandCode();
+        $sessionKey = empty($obj->sessionKey) ? 'PhoneCode' : $obj->sessionKey;
+        $_SESSION[$sessionKey] = $code;
+        $phone_array = array(0 => $phone);
+        $content = "您于" . date('m月d日 H:i') . $obj->oprate . "，验证码：" . $code . "。" . $obj->tips . "【网投所】";
+        $smsContent = array('user_id' => $this->users['user_id'], 'phone' => $phone_array, 'content' => $content);
+        $send_status = $this->sendSmsOne($smsContent);
+        if ($send_status == 0) {
+            $o->state = 1;
+            $o->msg = '手机短信发送成功';
+        } else {
+            $o->msg = '手机短信发送失败';
+        }
+        return $o;
+    }
+
+    //发送电子邮件
+    protected function sendMail($obj) {
+        $o = new stdClass();
+        $o->state = 0;
+        if (!empty($obj->email)) {
+            $user = M("User");
+            $email = $obj->email;
+            switch ($obj->check) {
+                default:
+                    $user_result = $user->where("email='%s' and email_status=1", $email)->find();
+                    break;
+                case 'old_email':
+                    $user_result = null;
+                    break;
+                case 'new_email':
+                    $user_result = $user->where("email='%s' and email_status=1", $email)->find();
+                    break;
+            }
+            if ($obj->check == "new_email") {
+                if (!empty($user_result)) {
+                    if ($this->users['user_id'] == $user_result['user_id']) {
+                        $o->msg = "新邮箱地址不能和原有邮箱地址一致";
+                        return $o;
+                    } else {
+                        $o->msg = "此邮箱地址已被占用";
+                        return $o;
+                    }
+                }
+            } else {
+                if (!empty($user_result)) {
+                    $o->msg = "此邮箱地址已被占用";
+                    return $o;
+                }
+            }
+            $key = C("front_server_key");
+            $user_data = array(
+                'user_id' => $this->users['user_id'],
+                'temp_email' => $email,
+                'token' => md5($key . $this->users['username'] . time()),
+                'token_exptime' => time() + 60 * 60 * 24,
+                'token_verify_status' => 0
+            );
+            $user->save($user_data);
+            $email_data = array(
+                'username' => $this->users['username'],
+                'code' => $user_data['token'],
+                'module' => MODULE_NAME,
+                'type' => $obj->type,
+                'check' => $obj->check
+            );
+            $content = getMailInfo($email_data);
+            $send_mail_data = array(
+                'module' => MODULE_NAME,
+                'user_id' => $this->users['user_id'],
+                'email' => $email,
+                'title' => '邮箱验证',
+                'msg' => $content,
+                'addtime' => time(),
+                'addip' => get_client_ip()
+            );
+            $state = $this->sendEmailOne($send_mail_data);
+            if ($state > 0) {
+                $o->state = 1;
+                $o->msg = '邮件发送成功，请查看你的邮件信息';
+            } else {
+                $o->msg = '邮件发送失败，请联系网站管理员';
+            }
+        } else {
+            $o->msg = '提交数据不完整';
+        }
+        return $o;
+    }
+
+    //字符串二次处理
+    protected function ModifierDisplay($a = '', $b = '') {
+        $a = trim($a);
+        $b = trim($b);
+        $len = strlen($a);
+        $result = "";
+        if ($len < 1) {
+            $result = '';
+        } else {
+            if (empty($b)) {
+                if ($len >= 2) {
+                    $len = mb_strlen($a, 'utf-8');
+                    $i = intval($len / 2);
+                    $result = mb_substr($a, 0, $i, 'utf-8') . str_pad('', ($len - $i), '*', STR_PAD_RIGHT);
+                } else {
+                    $result = $a;
+                }
+            } else {
+                switch ($b) {
+                    case 'name':
+                        if ($len == 4) {
+                            $result = mb_substr($a, 0, $len - 3, 'utf-8') . "*";
+                        } else {
+                            $result = mb_substr($a, 0, $len - 4, 'utf-8') . "*";
+                        }
+                        break;
+                    case 'username':
+                        $result = mb_substr($a, 0, 2, 'utf-8') . "**";
+                        break;
+                    case 'card_id':
+                        $result = substr($a, 0, 3) . '***' . substr($a, 6, 4) . '********';
+                        break;
+                    case 'phone':
+                        $result = substr($a, 0, 3) . '****' . substr($a, 7, 4);
+                        break;
+                    case 'email':
+                        $suffix = mb_substr($a, strpos($a, '@'));
+                        $str = mb_substr($a, 0, strpos($a, '@'));
+                        $len = mb_strlen($str, 'utf-8');
+                        $i = intval($len / 3);
+                        $result = mb_substr($str, 0, $i, 'utf-8') . str_pad('', $i, '*', STR_PAD_RIGHT) . mb_substr($str, $i * 2, $len - 2 * $i, 'utf-8') . $suffix;
+                        break;
+                    case 'account':
+                        $left = substr($a, 0, 6);
+                        $right = substr($a, 6, $len - 6);
+                        $result = $left . str_pad(substr($a, -4), strlen($right), '*', STR_PAD_LEFT);
+                        break;
+                }
+            }
+        }
+        return $result;
+    }
+
+}

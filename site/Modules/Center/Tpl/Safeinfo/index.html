@@ -1,0 +1,110 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+        <h2>安全信息</h2>	
+        
+        <!-- 昵称   start --> 
+        <div class="zh_nr">
+        	<div class="ggys nc">昵称</div> <span>已设置</span> <a style="float:right; color:#c7c7c9;">{$tempData['user_result']['username']}</a>
+        </div>
+        <!-- 昵称   end -->
+        
+		<!-- 实名认证 start --> 
+		<if condition='($tempData["user_result"]["real_status"] eq 1)'>	
+	   	    <div class="zh_nr">
+	        	<div class="ggys rz">实名认证</div> 
+	        	<span>{$tempData['user_result']['card_id']}</span> 
+	        	<a href="javascript:void(0);" style="float:right;">{$tempData['user_result']['realname']}</a>
+	        </div>
+        <else />
+        	<if condition='($tempData["user_result"]["card_type"] eq 1) and ($tempData["user_result"]["real_status"] eq 0)'>	
+        		<div class="zh_nr">
+		        	<div class="ggys rz">实名认证</div> 
+		        	<span style="color:#ff0103;">审核中</span> <a href="__GROUP__/Realname/see.html" style="float:right; color:#ff0103;">查看</a>
+		      	</div>	
+        	<elseif condition='($tempData["user_result"]["card_type"] eq 1) and ($tempData["user_result"]["real_status"] eq 2)' />  
+		        <div class="zh_nr">
+		        	<div class="ggys rz">实名认证</div> 
+		        	<span style="color:#ff0103;">审核失败</span> <a href="__GROUP__/Realname.html" style="float:right; color:#ff0103;">重新认证</a>
+		      	</div>
+		    <else />
+		    	<div class="zh_nr">
+		        	<div class="ggys rz">实名认证</div> 
+		        	<span style="color:#ff0103;">未认证</span> <a href="__GROUP__/Realname.html" style="float:right; color:#ff0103;">认证</a>
+		      	</div>
+	      	</if>
+     	</if>
+        <!-- 实名认证    end --> 
+        
+        <!-- 登录密码   start -->
+   	  	<div class="zh_nr">
+        	<div class="ggys mm">登录密码</div> <span>已设置</span> 
+        	<a href="__GROUP__/Loginpwd/modify.html" style="float:right; color:#ff0103;">修改</a>
+      	</div>
+
+        <!-- 登录密码   end -->
+        
+        <!-- 邮箱   start -->    
+        <if condition='($tempData["user_result"]["email_status"] eq 1)'>	     
+	      	<div class="zh_nr">
+	        	<div class="ggys yx">绑定邮箱</div> <span>{$tempData['user_result']['email']}</span> 
+	        	<a href="__GROUP__/Email/rebind.html" style="float:right; color:#ff0103;">修改</a>
+	      	</div>
+      	<else />
+      		<div class="zh_nr">
+	        	<div class="ggys yx">绑定邮箱</div> <span style="color:#ff0103;">未设置</span> 
+	        	<a href="__GROUP__/Email/bind.html" style="float:right; color:#ff0103;">设置</a>
+	      	</div>
+      	</if>     
+      	<!-- 邮箱   end--> 
+      	
+      	<!-- 手机   start -->
+      	<if condition='($tempData["user_result"]["phone_status"] eq 1)'>	
+	      	<div class="zh_nr">
+	        	<div class="ggys sj">绑定手机</div> <span>{$tempData['user_result']['phone']}</span> 
+	        	<a href="__GROUP__/Mobile/rebind.html" style="float:right; color:#ff0103;">修改</a>
+	      	</div>
+      	<else />
+      		<div class="zh_nr">
+	        	<div class="ggys sj">绑定手机</div> <span style="color:#ff0103;">未设置</span> 
+	        	<a href="__GROUP__/Mobile/bind.html" style="float:right; color:#ff0103;">设置</a>
+	      	</div>
+      	</if>
+      	<!-- 手机   end -->
+      	
+      	<!-- 提现密码   start -->
+      	<if condition='($tempData["user_result"]["paypassword"] neq "")'>	
+	      	<div class="zh_nr">
+	        	<div class="ggys txmm">提现密码</div> <span>已设置</span> 
+	        	<div style="float:right; height:20px; display:block; color:#cbcbcb; font-family:'微软雅黑'; font-size:10px;">
+	        		<a href="__GROUP__/Paypwd/modify.html" style="color:#ff0103;font-size:12px;margin-right:0px;">修改</a>&nbsp;|&nbsp;<a href="__GROUP__/Paypwd/find.html" style="color:#ff0103;font-size:12px;">找回</a>
+	        	</div>
+	        </div>
+        <else />
+        	<div class="zh_nr">
+	        	<div class="ggys txmm">提现密码</div> <span style="color:#ff0103;">未设置</span> 
+	        	<a href="__GROUP__/Paypwd/setup.html" style="float:right; color:#ff0103;">设置</a>
+	        </div>
+        </if>
+      	<!-- 提现密码   end -->
+        
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+</body>
+</html>

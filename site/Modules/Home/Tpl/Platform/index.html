@@ -1,0 +1,270 @@
+<include file="Common/header" />
+<!--  引入头部   end -->
+
+<!-- 投资项目 开始-->
+<div class="sxxm">
+	<div class="sx_zd">
+		<h2>平台筛选</h2>
+	  	<ul id="js_search" class="sx_ul">
+        	<li>
+            	<span>安全评级：</span>
+               	<a><span class="bx" grade="0">不限</span></a>
+				<volist name="grade_list" id="v">
+					<a><span grade="{$v['id']}">{$v['name']}</span></a>
+				</volist>
+            </li>
+            <li>
+                <span>年化收益：</span>
+    			<a><span class="bx" rate="0">不限</span></a>
+				<a><span rate="1">20%~16%</span></a>
+				<a><span rate="2">16%~12%</span></a>
+				<a><span rate="3">12%~8%</span></a>
+				<a><span rate="4"> 8%以下</span></a>
+            </li> 
+            <li>
+				<span>投资期限：</span>
+	    		<a><span class="bx" term="0">不限</span></a>
+				<a><span term="1">30天以下</span></a>
+			    <a><span term="2">1~3个月</span></a>
+				<a><span term="3">3~6个月</span></a>
+				<a><span term="4">6~12个月</span></a>
+	            <a><span term="5">12个月以上</span></a>
+            </li>
+		</ul>
+	</div>           
+</div>
+
+<div class="clear"></div>
+<div class="toubiao">
+	<div class="t_1">
+	   	<ul id="js_sort">
+            <li><a class="ms" href="javascript:void(0);" sorttype="0" sortorder="desc">默认排序</a></li>
+            <li><a href="javascript:void(0);" sorttype="1" sortorder="desc">收益率<i></i></a></li>
+            <li><a href="javascript:void(0);" sorttype="2" sortorder="desc">借款期限<i></i></a></li>
+            <li><a href="javascript:void(0);" sorttype="3" sortorder="desc">可投标数<i></i></a></li>
+        </ul>
+  </div>
+    
+<div class="tou_lie" style="height: auto; padding-bottom:20px;">
+    
+	<table width="960" class="tab_sty1">
+		<thead>
+			<tr>
+                <th width="172" align="center" valign="middle">平台名称</th>
+                <th width="147" align="center" valign="middle">安全评级</th>
+                <th width="154" align="center" valign="middle">利率范围</th>
+                <th width="131" align="center" valign="middle">期限范围</th>
+                <th width="163" align="center" valign="middle">可投标数</th>
+                <th width="165" align="center" valign="middle">详情</th>
+			</tr>
+		</thead>
+        <tbody>
+        <if condition='($count neq 0)'>
+        <volist name="list" id="v">
+			<tr>
+				<td align="center" valign="middle"><a href="/Platform/details/id/{$v['id']}.html">{$v['platform_name']}</a></td>
+                <td align="center" valign="middle" style="width:100px;">
+					<div class="td5-p">
+						<span class="js_grade grade gradeBBB">{$v['grade_name']}</span>
+						<ul class="th-icon-ul" style="left:102px;">
+							<li><span class="sx">资本充足：</span><span class="sz">{$v['config']['capital']}</span></li>
+							<li><span class="sx">分散度：</span><span class="sz">{$v['config']['dispersion']}</span></li>
+							<li><span class="sx">透明度：</span><span class="sz">{$v['config']['transparency']}</span></li>
+							<li><span class="sx">流动性：</span><span class="sz">{$v['config']['mobility']}</span></li>
+							<li><span class="sx">运营能力：</span><span class="sz">{$v['config']['operate']}</span></li>
+							<li><span class="sx">违约成本：</span><span class="sz">{$v['config']['cost']}</span></li>
+						</ul>
+					</div>
+				</td>
+                <td align="center" valign="middle">{$v['min_rate']}% ~ {$v['max_rate']}%</td>
+                <td align="center" valign="middle">{$v['min_term']}~{$v['max_term']}</td>
+                <td align="center" valign="middle">
+	                <if condition='($v[sum_num] eq 0)'>
+	                	待发布
+	                <else />
+	                	{$v['sum_num']}个
+	                </if>
+                </td>
+                <td align="center" valign="middle">
+                    
+                    <if condition="$v['max_rate'] eq 0"> 
+                            <a class="btn btn_blue" href="{$v['website']}" target="_blank"><span>查 看</span></a>
+                            <else />
+                              <a class="btn btn_blue" href="/Platform/details/id/{$v['id']}.html" ><span>查 看</span></a></if>
+                    
+                    
+                    <!--<a class="btn btn_blue" href="/Platform/details/id/{$v['id']}.html" ><span>查 看</span></a></td>-->
+			</tr>
+		</volist> 
+		<else />
+			<tr><td colspan="6" class="tdnone">对不起，暂未检索到任何数据。</td></tr>
+		</if>        			
+		</tbody>
+	</table>
+    <!-- 分页 开始-->
+    <div class="pagelist">
+           {$page}          
+    </div>	
+	<div class="clear"></div>
+</div>
+
+</div>
+<!-- 选标项目 结束-->
+
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$(".js_grade").live('mouseover', function(){
+		$(this).parent().find(".th-icon-ul").show();
+	});
+	$(".js_grade").live('mouseout', function(){
+		$(this).parent().find(".th-icon-ul").hide();
+	});
+	//搜索筛选
+	$("#js_search a").live('click', function(){
+		var _this = $(this);
+		_this.parents("li").find("a span").removeClass("bx");
+		_this.find("span").addClass("bx");
+		request();
+	});
+	//排序筛选
+	$("#js_sort a").live('click', function(){
+		var _this = $(this);
+		_this.addClass("ms").parent().siblings().children("a").removeClass("ms");
+		_this.parents("ul").find("i").removeClass("i-active-2");
+		if(_this.find('i').attr('class')=='i-active'){
+			_this.attr({'sortorder':'asc'}).find('i').attr({'class':'i-active-2'});
+		}else{
+			_this.attr({'sortorder':'desc'}).find('i').attr({'class':'i-active'});
+		}
+		request();
+	});
+	//分页筛选
+	$(".pagelist a:not('.disabled, .a')").live('click', function(){
+		var page = parseInt($(this).attr('page'));
+		request(page);
+	});
+	function request(page){
+		var obj = {}, arr = [], page=page==undefined?1:page;
+		obj.page = page;
+		obj.grade = $("#js_search li").eq(0).find("a span.bx").attr("grade");
+		obj.rate = $("#js_search li").eq(1).find("a span.bx").attr("rate");
+		obj.term = $("#js_search li").eq(2).find("a span.bx").attr("term");
+		obj.sorttype = $("#js_sort li").children(".ms").attr("sorttype");
+		obj.sortorder = $("#js_sort li").children(".ms").attr("sortorder");
+		$.ajax({
+			url: '/Platform/listing',
+			type: 'get',
+			data: obj,
+			dataType: 'json',
+			success: function(p){
+				//列表数据填充
+				var str = '';
+				if(p.rows!=null && p.rows.length>0){
+					for(var i=0; i<p.rows.length; i++){
+						str += '<tr><td align="center" valign="middle"><a href="/Platform/details/id/'+p.rows[i].id+'.html">'+p.rows[i].platform_name+'</a></td>';
+						str += '<td align="center" valign="middle" style="width:100px;"><div class="td5-p">';
+						str += '<span class="js_grade grade gradeBBB">'+p.rows[i].grade_name+'</span>';
+						str += '<ul class="th-icon-ul" style="left:102px;">';
+						str += '<li><span class="sx">资本充足：</span><span class="sz">'+p.rows[i].config.capital+'</span></li>';
+						str += '<li><span class="sx">分散度：</span><span class="sz">'+p.rows[i].config.dispersion+'</span></li>';
+						str += '<li><span class="sx">透明度：</span><span class="sz">'+p.rows[i].config.transparency+'</span></li>';
+						str += '<li><span class="sx">流动性：</span><span class="sz">'+p.rows[i].config.mobility+'</span></li>';
+						str += '<li><span class="sx">运营能力：</span><span class="sz">'+p.rows[i].config.operate+'</span></li>';
+						str += '<li><span class="sx">违约成本：</span><span class="sz">'+p.rows[i].config.cost+'</span></li>';
+						str += '</ul></div></td>';
+						str += '<td align="center" valign="middle">'+p.rows[i].min_rate+'% ~ '+p.rows[i].max_rate+'%</td>';
+			      		str += '<td align="center" valign="middle">'+p.rows[i].min_term+'~'+p.rows[i].max_term+'</td>';
+			      		str += '<td align="center" valign="middle">';
+			      		if(p.rows[i].sum_num==0){
+			      			str += '待发布';
+			      		}else{
+			      			str += p.rows[i].sum_num+'个';
+						}
+			      		str += '</td>';
+					    str += '<td align="center" valign="middle"><a class="btn btn_blue" href="/Platform/details/id/'+p.rows[i].id+'.html" ><span>查 看</span></a></td>';
+					}
+				}else{
+					str += '<tr><td colspan="6" class="tdnone">对不起，暂未检索到任何数据。</td></tr>';
+				}
+				$(".tab_sty1").find('tbody').empty().html(str);
+				
+				//分页数据填充
+				var total = p.total,
+					rollPage = 4,
+					pageNum = 10,
+					sumPage = parseInt(Math.ceil(total/pageNum));
+				$(".pagelist").empty();
+				if (sumPage>1){
+					if(page<1){
+						page = 1;
+					}else{
+						page = page;
+					}
+					if((page+1) > sumPage){
+						page = sumPage;
+					}
+					var pageThemes ='<span class="l">';
+					if(page<=1){
+						pageThemes += '<a class="pn-prev disabled" page="1"><i><</i><em>上一页</em></a>';
+					}else{
+						pageThemes += '<a class="pn-prev" page="'+(page-1)+'"><i><</i><em>上一页</em></a>';
+					}
+					if(sumPage>rollPage){
+						if(page < (rollPage/2+1)){
+							for (var i=1; i <= rollPage; i++) {
+								if(i==page){
+									pageThemes += '<a class="a n">'+i+'</a>';
+								}else{
+									pageThemes += '<a href="javascript:void(0);" page='+i+'>'+i+'</a>';
+								}
+							}
+							pageThemes += '<b class="n_1"> … </b><a class="n" href="javascript:void(0);" page="'+sumPage+'">'+sumPage+'</a>';
+						}else if((sumPage-page)<=(rollPage/2)){
+							pageThemes += '<a class="n" href="javascript:void(0);" page="1">1</a><b class="n_1"> … </b>';
+							for(var i=sumPage-(rollPage-1); i<=sumPage; i++){
+								if(i==page){
+									pageThemes += '<a class="a n">'+i+'</a>';
+								}else{
+									pageThemes += '<a class="n" href="javascript:void(0);" page="'+i+'">'+i+'</a>';	
+								}
+							}
+						}else{
+							pageThemes += '<a class="n" href="javascript:void(0);" page="1">1</a><b class="n_1"> … </b>';
+							for(var i=page-(rollPage/2-1); i<page+rollPage/2; i++){
+								if(page==i){
+									pageThemes += '<a class="a n">'+i+'</a>';
+								}else{
+									pageThemes += '<a class="n" href="javascript:void(0);" page="'+i+'">'+i+'</a>';
+								}	
+							}
+							pageThemes += '<b class="n_1"> … </b><a class="n" href="javascript:void(0);" page="'+sumPage+'">'+sumPage+'</a>';
+						}
+					}else{
+						for(var i=1; i<=sumPage; i++){
+							if(i==page){
+								pageThemes += '<a class="a n">'+i+'</a>';
+							}else{
+								pageThemes += '<a href="javascript:void(0);" page="'+i+'">'+i+'</a>';
+							}
+						}
+					}
+					if(page>=sumPage){
+						pageThemes += '<a class="pn-next disabled" page="'+sumPage+'">下一页<i>></i></a>';
+					}else{
+						pageThemes += '<a class="pn-next" page="'+(page+1)+'">下一页<i>></i></a>';
+					}
+					pageThemes += '</span>';	
+					$(".pagelist").html(pageThemes);
+				}
+			}
+		});
+			
+	}
+});
+</script>
+</body>
+</html>

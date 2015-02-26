@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>{$pageTitle}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="{$pageKeywords}" />
+        <meta name="description" content="{$pageDes}" />
+        <link href="__ROOT__/static/css/home/login.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="__ROOT__/static/js/jquery.js?version=1.7.1"></script>
+        <script type="text/javascript" src="__ROOT__/static/js/plugins/layer.min.js?version=1.8.4"></script>
+    </head>
+    <body>
+        <div class="logo">
+            <div class="logo_01">
+                <a href="/"><img src="/static/images/home/logo_dl.png"/></a>
+                <span>
+                    <if condition='($loginPage eq 1)'>
+                        没有网投所账号？ <a style="color:#F00;" href="/Register.html">立即注册</a>
+                        <else /> 
+                        已有网投所账号？ <a style="color:#F00;" href="/Login.html">立即登录</a>  
+                    </if>
+                </span>
+            </div>
+        </div>

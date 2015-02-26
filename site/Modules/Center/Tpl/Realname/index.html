@@ -1,0 +1,171 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	
+        <h2>安全信息</h2>
+    	
+		<div class="rznr">
+			<div class="form_nr">
+	           <div class="input_nr">
+	               	<span style="width:90px; text-align:right;">
+	               		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:22px;">*</a>真实姓名
+	               	</span>
+	               	<input id="realname" name="realname" type="text" class="input_text" value="{$user_result['realname']}" />
+	           	</div>
+	           	<span id="js_realname_tips" class="q_text_sj"></span>
+	            <span class="q_text_sj"></span>
+				<div class="input_nr">
+					<span style="width:90px; text-align:right;">
+						<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:22px;">*</a>身份证号
+					</span>
+					<input id="card_id" name="card_id" type="text" class="input_text" maxlength="18" value="{$user_result['card_id']}" />
+				</div>
+	            <span id="js_cardid_tips" class="q_text_sj"></span>
+	            
+	            <div class="input_nr" style="padding-top:20px;">
+	            	<span style="width:132px; text-align:right;">
+	            		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑';  margin-left:22px;">*</a>身份证正面上传	
+	            	</span>
+	            	<div class="bd1">
+	            	    <input id="textUploadUrl_1" type="hidden" value="{$user_result['card_pic1']|default=''}" />
+						<iframe name="iframeUpload" src="__GROUP__/Upload/page/type/attestation/id/1" width="100px" height="30px" frameborder="no" scrolling="no"></iframe>
+						<div id="iframeUploadPanel_1"></div>
+					</div>
+	            	<div id="js_cardpic1_tips" class="bd1"></div>
+	            </div> 
+                <img id="imageUploadUrl_1" src="/static/{$user_result['card_pic1']|default=''}" height="157" class="shanchuang" style="display:none;" />
+                
+                
+               	<div class="input_nr" style="padding-top:20px;">
+	            	<span style="width:132px; text-align:right;">
+	            		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑';  margin-left:22px;">*</a>身份证反面上传
+	            	</span>
+	            	<div class="bd1">
+	            		<input id="textUploadUrl_2" type="hidden" value="{$user_result['card_pic2']|default=''}" />
+						<iframe name="iframeUpload" src="__GROUP__/Upload/page/type/attestation/id/2" width="100px" height="30px" frameborder="no" scrolling="no"></iframe>
+						<div id="iframeUploadPanel_2"></div>
+					</div>
+					<div id="js_cardpic2_tips" class="bd1"></div>
+	            </div> 
+                <div><img id="imageUploadUrl_2" src="/static{$user_result['card_pic2']|default=''}" class="shanchuang" height="157" style="display:none;" /></div>
+              	
+				<input id="realnameBtn" type="button" value="" class="input_btn sj_btn" style="margin-top:30px;" />
+				<span id="js_submit_tips" class="q_text_sj"></span>
+			</div>
+		</div>
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#realname").focusin(function(){
+		$("#js_realname_tips").css({'color':'#666'}).text('请输入您的真实姓名');
+	}).focusout(function(){
+		checkRealName();
+	});
+	$("#card_id").focusin(function(){
+		$("#js_cardid_tips").css({'color':'#666'}).text('请正确输入您的二代身份证号码');
+	}).focusout(function(){
+		checkCard();
+	});
+	$("#realnameBtn").click(function(){
+		var obj = {};
+		obj.realname = $("#realname").val();
+		obj.card_id = $("#card_id").val();
+		obj.card_pic1 = $("#textUploadUrl_1").val();
+		obj.card_pic2 = $("#textUploadUrl_2").val();
+		if(checkRealName() && checkCard() && checkPic1(obj.card_pic1) && checkPic2(obj.card_pic2)){
+			$.ajax({
+				url: '__GROUP__/Realname/verify',
+				type: 'post',
+				data: obj,
+				dataType: 'json',
+				beforeSend: function(){
+					$("#realnameBtn").attr('disabled', true);
+				},
+				success: function(p){
+					$("#realnameBtn").attr('disabled', false);
+					$("#js_submit_tips").text(p.msg);
+					if(p.state==1){
+						location.href = '__GROUP__/Realname/see';
+					}else{
+						return false;
+					}			
+				}
+			});	
+		}
+	});
+});
+function checkRealName(){
+	var _this = $("#realname"),
+		v = _this.val(),
+		check = str_chinese(v),
+		len = str_length($.trim(v));
+	if(len>0){
+		if(check){
+			$("#js_realname_tips").text('');
+			return true;
+		}else{
+			$("#js_realname_tips").css({'color':'#f00'}).text('包含非法字符');
+			return false;
+		}	
+	}else{
+		$("#js_realname_tips").css({'color':'#f00'}).text('真实姓名不能为空');
+		return false;
+	}
+}
+function checkCard(){
+	var _this = $("#card_id"),
+		v = _this.val(),
+		len = str_length($.trim(v));
+	if(len>0){
+		if(card_patrn.test(v)){
+			$("#js_cardid_tips").text('');
+			return true;
+		}else{
+			$("#js_cardid_tips").css({'color':'#f00'}).text('身份证号码格式不正确');
+			return false;
+		}
+	}else{
+		$("#js_cardid_tips").css({'color':'#f00'}).text('身份证号码不能为空');
+		return false;
+	}
+}
+function checkPic1(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_cardpic1_tips").css({color:"#f00"}).text("请上传身份证正面照片");
+		return false;
+	}else{
+		$("#js_cardpic1_tips").text("");
+		return true;
+	}
+}
+function checkPic2(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_cardpic2_tips").css({color:"#f00"}).text("请上传身份证反面照片");
+		return false;
+	}else{
+		$("#js_cardpic2_tips").text("");
+		return true;
+	}
+}
+</script>
+</body>
+</html>

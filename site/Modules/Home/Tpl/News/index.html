@@ -1,0 +1,69 @@
+<include file="Common/header" />
+<style type="text/css">
+.pagelist .l{ text-align:center; width:590px; float:left; margin-top:40px;margin-bottom:20px; cursor:pointer;}
+</style>
+
+<!--  引入头部   end -->
+
+<!-- 内容区 开始-->
+
+<div class="cenner">
+    <div class="list-menu">
+        <div class="list-menul">{$nav}</div>
+    </div>
+	<div class="list_neir">
+		<div class="list_left">
+			<volist name="list" id="v">
+			<div class="list_box">
+		  		<a href="/News/details/id/{$v['id']}.html">
+					<div class="list_biaoti">{$v['title']}</div>
+		            <div class="list_img_p">
+			            <if condition='($v[thumbnail] neq "")'>
+			             	<img src="/static/{$v['thumbnail']}" width="160" height="105" alt="{$v['title']}" />
+			            </if>
+						<p class="list_1">{$v['summary']}</p>                    
+		                <p class="list_2">{$v['addtime']|date='Y-m-d H:i:s', ###}</p>
+		            </div>
+		  		</a>  
+			</div>
+			</volist>
+			<div class="pagelist">
+	       		{$page}
+			</div>   
+		</div>
+		          
+		<div class="list_right">
+		    <div class="list_r_box">
+		    	<div class="li_r1"><h5>热门阅读</h5></div>
+			    <div class="li_r2">
+			    	<ul>
+			    	<volist name="hotlist" id="v">
+			        <li>
+			            <a href="/News/details/id/{$v['id']}.html">
+			                <div class="li_img">
+			                	<img src="/static/{$v['thumbnail']}" width="160" height="105" alt="{$v['title']}" />
+			                    <span>{$v['title']|mb_substr=0,12,'utf-8'}</span>
+			                    <p>{$v['addtime']|date='Y-m-d H:i:s', ###}</p>
+			                </div>
+			            </a>
+			        </li>
+			        </volist>
+			     	</ul>
+			    </div> 
+		    </div> 
+		</div>
+		
+	</div>
+	
+</div>
+<!-- 内容区 结束-->
+
+<div class="clear"></div>
+
+
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+
+</body>
+</html>

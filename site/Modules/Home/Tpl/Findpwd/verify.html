@@ -1,0 +1,65 @@
+<include file="Common/header_login" />
+<!--  引入头部   end -->
+
+
+<!-- 验证邮件 start -->
+<div class="l_center cr">
+	<div class="l_center_01">   
+		<p style="font-size:14px; padding-top:80px; color:#666; text-align:center;">{$tempData['byVerifyTitle']}</p>
+		<p style="font-size:22px; text-align:center; margin-top:30px; font-family:'微软雅黑'; color:#F00;">{$tempData['byVerifyName']}</p>
+		<form id="byverify_form" action="/Findpwd/resetup" method="post">  
+		    <ul class="ul_li" style="background:none; margin-top:40px; padding-left:310px;">     
+				<li>
+					<span class="ul_span">收到的验证码：</span>
+					<div class="c_li_1" style="width:190px;">
+						<input id="code" name="code" style="font-size:14px; width:180px;" type="text" maxlength="6" />
+					</div>
+					<span id="js_code_tips" class="ul_s"></span>
+				</li> 
+		      	<li class="l_denglu1" style=" margin-left:2px;">
+		      		<input id="uid" name="uid" type="hidden" value="{$tempData['uid']}" />
+					<input id="byverify_btn" style="cursor:pointer; background:url(/static/images/home/login/t_88.png) no-repeat;" type="button" />
+				</li> 
+		   	</ul>
+	   	</form>
+    </div>
+</div>
+<!-- 验证邮件 end -->
+
+<!--  引入底部   start -->
+<include file="Common/footer_login" />
+<!--  引入底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#code").focusin(function(){
+		$("#js_code_tips").css({color:'#999'}).text('验证码长度必须为6位').show();
+	}).focusout(function(){
+		var v = $(this).val();
+		checkCode(v);
+	});
+	$("#byverify_btn").click(function(){
+		var code = $("#code").val();
+		if(checkCode(code)){
+			$("#byverify_form").submit();
+			$("#code").val('');
+		}
+	});
+});
+function checkCode(v){
+	var val = $.trim(v),
+		len = val.length;
+	if(len==0){
+		$("#js_code_tips").css({color:'#f00'}).text('请输入验证码').show();
+		return false;
+	}else if(len!=6){
+		$("#js_code_tips").css({color:'#f00'}).text('验证码长度必须为6位').show();
+		return false;
+	}else{
+		$("#js_code_tips").css({color:'#f00'}).text('').hide();
+		return true;
+	}
+}
+</script>
+</body>
+</html>

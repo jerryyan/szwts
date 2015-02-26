@@ -1,0 +1,92 @@
+<?php if (!defined('THINK_PATH')) exit();?><div id="realname_panel" style="height:600px;">
+<div style="padding:10px 20px;" class="selectPanel">
+<div style="margin-bottom:8px;">
+	用户名：<input flag="username" type="text" /> 
+	真实姓名：<input flag="realname" type="text" />
+	类型：<select flag="status">
+			<option value="-1">全部</option>
+			<option value="0">等待审核</option>
+			<option value="1">审核通过</option>
+			<option value="2">审核失败</option>
+	</select>
+	<a class="easyui-linkbutton" iconCls="icon-search" id="js_searchRealBtn">搜索</a>
+</div>
+</div>
+<table id="realname_datagrid"></table>
+</div>
+
+<script>
+$("#realname_datagrid").datagrid({
+	title: '实名认证信息',
+	fit:true,
+	nowrap: false,
+	striped: true,
+	collapsible:false,
+	url: '__URL__/getRealList',
+	pagination:true,
+	rownumbers:true,
+	singleSelect:true,
+	fitColumns:true,
+	pageSize:20,
+	toolbar: [{
+		text: '审核/查看',
+		iconCls: 'icon-edit',
+		handler: function(){
+			var selected = $("#realname_datagrid").datagrid("getSelected");
+			if(!selected){
+				$.messager.alert('系统提示','请选择操作项');
+				return false;
+			}
+			$.addWindow($("#realname_panel"), {
+				title: '实名信息',
+				href: '__URL__/verify/user_id/'+selected.user_id,
+				closable: true,
+				minimizable: false,
+				modal: true,
+				width: 600,
+				cache: false
+			});
+		}
+	}],
+	columns: [[ 
+		{title:'用户ID', field:'user_id', width:30, sortable:true},
+		{title:'用户名', field:'username', width:60, sortable:true},
+		{title:'真实姓名', field:'realname', width:60, sortable:true},
+		{title:'性别', field:'sex', width:30, sortable:true, formatter:function(val, rec){
+			if(val==1)return '男';		
+			if(val==2)return '女';
+		}},
+		{title:'出生日期', field:'birth', width:80, sortable:true},	
+		{title:'证件类型', field:'card_type', width:60, sortable:true},
+		{title:'证件号码', field:'card_id', width:100, sortable:true},
+		{title:'身份证正面', field:'card_pic1', width:100, sortable:true, formatter:function(val, rec){
+			return '<a href="/static/'+val+'" target="_blank"><img src="/static/'+val+'" height="50" /></a>';
+		}},
+		{title:'身份证反面', field:'card_pic2', width:100, sortable:true, formatter:function(val, rec){
+			return '<a href="/static/'+val+'" target="_blank"><img src="/static/'+val+'" height="50" /></a>';
+		}},
+		{title:'操作', field:'real_status', width:60, sortable:true, formatter:function(val, rec){			
+			if(val==0)return '<font color="#f00;">等待审核</font>';
+			if(val==1)return '<font color="#009900;">审核通过</font>';	
+			if(val==2)return '审核失败';	
+		}}
+	]]
+});
+
+$("#realname_panel").find("select[flag='status']").change(function(){
+	getRealList();
+});
+
+$("#realname_panel").find("#js_searchRealBtn").bind('click', function(){
+	getRealList();
+});
+
+function getRealList(){
+	var obj = {},panel = $("#realname_panel");
+		obj.username = panel.find("input[flag='username']").val(),
+		obj.realname = panel.find("input[flag='realname']").val(),
+		obj.status = panel.find("select[flag='status']").find("option:selected").val();
+	$("#realname_datagrid").datagrid('load', obj);
+}
+
+</script>

@@ -1,0 +1,87 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	
+        <h2>安全信息</h2>       
+        <div class="img_kj">
+        	<img src="/static/images/center/bdyx_img.jpg" width="700" height="33" />
+        </div>
+        <div class="text_yx">
+        	<a style="margin-left:135px; color:#666;">验证当前邮箱</a>
+        	<a style=" margin-left:53px; color:#666;">填写新邮箱</a> 
+        	<a style="margin-left:65px; color:#666;">验证新邮箱</a> 
+        	<a style="margin-left:80px; color:#666;">成功</a>
+        </div>
+        <div class="rznr">
+			<form id="reBindByEmailForms" action="__GROUP__/Email/verifyoldbyemail" method="post" class="form_nr">
+		        <div class="input_nr" style="margin-bottom:20px;">
+		        	<input id="email" name="email" type="hidden" value="{$tempData['user_result']['email']}" />
+		        	<span style="width:90px; text-align:right;">已验证邮箱</span><span>{$tempData['user_result']['email_hide']}</span>
+		        </div>
+		      	<div class="input_nr">
+		      		<span style="width:90px; text-align:right;">
+		      			<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:36px;">*</a>验证码
+		      		</span>
+		      		<input id="code" name="code" type="text" class="input_text" maxlength="4" />
+		      		<img id="valicodeforimage" src="__GROUP__/Index/getvalicode" onclick="this.src='__GROUP__/Index/getvalicode/' + Math.round(Math.random()*10000)" alt="点击更新验证码" width="105" height="30" />
+		      	</div>
+              	<span id="js_valicode_tips" class="q_text_yx"></span>
+			  	<input id="reBindByEmailBtn" type="button" value="" class="yxyzm yx_btn" />
+			  	<span id="js_submit_tips" class="q_text_yx"></span>
+			</form>
+          <p style="width:700px; text-align:center; font-family:'微软雅黑'; font-size:14px; color:#adadad; margin-bottom:30px;">
+          	为保障您的账户信息安全，在变更重要信息时需要进行身份验证。
+          </p>
+        </div>
+       	
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#code").focusin(function(){
+		$("#js_valicode_tips").css({'color':'#666'}).text('请输入验证码');
+	}).focusout(function(){
+		var _this = $(this),
+			v = _this.val();
+		checkCode(v);
+	});
+	$("#reBindByEmailBtn").click(function(){
+		var code = $("#code").val();
+		if(checkCode(code)){
+			$("#reBindByEmailForms").submit();
+			$("#reBindByEmailBtn").attr("disabled", true);
+		}
+	});
+});
+function checkCode(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_valicode_tips").css({'color':'#f00'}).text('验证码不能为空');
+		return false;
+	}else if(len==4){
+		$("#js_valicode_tips").text('');
+		return true;
+	}else{
+		$("#js_valicode_tips").css({'color':'#f00'}).text('验证码长度必须为4位');
+		return false;
+	}
+}
+</script>
+</body>
+</html>

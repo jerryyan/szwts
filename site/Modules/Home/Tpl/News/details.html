@@ -1,0 +1,51 @@
+<include file="Common/header" />
+<!--  引入头部   end -->
+
+<!-- 内容区 开始-->
+<div class="cenner">
+    <div class="list-menu">
+        <div class="list-menul">{$nav}</div>
+    </div>
+	<div class="list_neir">
+		<div class="list_left">
+	    	<div class="li_bt">
+	    		<h1 class="tiet">{$articles_result['title']}</h1>
+	    		<p>发布时间：{$articles_result['addtime']|date='Y-m-d H:i:s', ###}</p>
+	    	</div>
+	    	<div class="li_zyao"><span>摘要：</span>{$articles_result['summary']}</span></div>
+	    	<div class="li_neir">{$articles_result['content']}</div>
+    	</div> 
+    </div>
+    
+   	<div class="list_right">
+	    <div class="list_r_box">
+	    	<div class="li_r1"><h5>热门阅读</h5></div>
+		    <div class="li_r2">
+		    	<ul>
+		    	<volist name="hotlist" id="v">
+		        <li>
+		            <a href="/News/details/id/{$v['id']}.html">
+		                <div class="li_img">
+		                	<img src="/static/{$v['thumbnail']}" width="160" height="105" alt="{$v['title']}" />
+		                    <span>{$v['title']|mb_substr=0,12,'utf-8'}</span>
+		                    <p>{$v['addtime']|date='Y-m-d H:i:s', ###}</p>
+		                </div>
+		            </a>
+		        </li>
+		        </volist>
+		     	</ul>
+		    </div> 
+	    </div> 
+	</div> 
+</div>
+<!-- 内容区 结束-->
+
+<div class="clear"></div>
+
+
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+
+</body>
+</html>

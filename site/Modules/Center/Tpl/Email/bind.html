@@ -1,0 +1,94 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	
+        <h2>安全信息</h2> 
+        <div class="img_kj"><img src="/static/images/center/bdsj_img.jpg" width="700" height="33" /></div>
+        <div class="text_yx">
+	        <a style="margin-left:146px; color:#666;">填写邮箱</a>
+	        <a style=" margin-left:76px; color:#666;">验证邮箱</a> 
+	        <a style="margin-left:90px; color:#666;">成功</a>
+        </div>       		
+        <div class="rznr">
+	       	<p style="width:700px; text-align:center; font-family:'微软雅黑'; font-size:14px; color:#adadad; margin-top:20px;">请填写您的电子邮箱，我们将会向该邮箱发送验证链接，请注意查收</p>
+			<form id="bindForms" action="__GROUP__/Email/verify" method="post" class="form_nr">
+			  	<div class="input_nr">
+				  	<span style="width:90px; text-align:right;">
+				  		<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:50px;">*</a>邮箱
+				  	</span>
+			  		<input id="email" name="email" type="text" class="input_text" />
+			  	</div>
+				<span id="js_email_tips" class="q_text_yx"></span>
+			  	<input id="bindBtn" type="button" value="" class="yzsj_xb yx_btn" />
+			  	<span id="js_submit_tips" class="q_text_yx"></span>
+			</form>
+        </div>
+       	
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#email").focusin(function(){
+		$("#js_email_tips").css({'color':'#666'}).text('请输入要绑定的邮箱地址');
+	}).focusout(function(){
+		var _this = $(this),
+			v = _this.val();
+		checkEmail(v);
+	});
+	$("#bindBtn").click(function(){
+		var obj = {};
+		obj.email = $("#email").val();
+		if(checkEmail(obj.email)){
+			$.ajax({
+				url: '__GROUP__/Email/sendEmail',
+				type: 'post',
+				data: obj,
+				dataType: 'json',
+				beforeSend: function(){
+					$("#bindBtn").attr('disabled', true);
+				},
+				success: function(p){
+					$("#bindBtn").attr('disabled', false);
+					$("#js_submit_tips").css({'color':'#f00'}).text(p.msg);
+					if(p.state==1){
+						$("#bindForms").submit();
+					}else{
+						return false;
+					}			
+				}
+			});
+		}
+	});
+});
+function checkEmail(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_email_tips").css({'color':'#f00'}).text('邮箱地址不能为空');
+		return false;
+	}else if(!email_patrn.test(v)){
+		$("#js_email_tips").css({'color':'#f00'}).text('邮箱地址格式不正确');
+		return false;
+	}else{
+		$("#js_email_tips").text('');
+		return true;
+	}
+}
+</script>
+</body>
+</html>

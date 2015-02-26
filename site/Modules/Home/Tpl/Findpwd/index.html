@@ -1,0 +1,204 @@
+<include file="Common/header_login" />
+<!--  引入头部   end -->
+
+<!-- 找回密码  start -->
+<div class="l_center cr">
+	<div class="l_center_01">
+        <div class="type" style="padding-top:40px;">
+	        <a id="findPwdByEmail_a" class="ui-button-blue">使用绑定邮箱找回密码</a>
+	        <a id="findPwdByPhone_a" class="ui-button-red">使用绑定手机号找回密码</a>
+        </div>
+        
+        <div id="findPwdByEmail_div" style="display:none;">
+        <form id="findPwdByEmail_form" action="/Findpwd/byemail" method="post">
+	        <ul class="ul_li" style="background:none; margin-top:20px; padding-left:160px; width:750px; float:left;">
+		    	<li style="width:750px;">
+					<span class="ul_span">邮箱:</span> 
+					<div class="c_li_1">
+						<input id="email" name="email" type="text" maxlength="30" />
+					</div>
+				</li>
+				<li style="width:750px;">
+					<span class="ul_span">验证码:</span>
+					<div class="c_li_1" style="width:135px;">
+						<input id="emailcode" name="emailcode" type="text" style="width:130px;" maxlength="4" />
+					</div>
+					<p class="m_1">
+						<img id="valicodeforimage_email" src="/Login/getvalicode" onclick="this.src='/Login/getvalicode/' + Math.round(Math.random()*10000)" alt="点击更新验证码" />
+					</p>
+					<span id="js_findbyemail_tips" style="float:left; width:500px; margin-left:124px; line-height:25px; height:25px; color:#999; display:none;"></span>
+				</li>
+				<li class="l_denglu1">
+					<input id="findPwdByEmail_btn" name="findPwdByEmail_btn" style="cursor:pointer; background:url(/static/images/home/login/t_88.png) no-repeat;" type="button" />
+				</li>
+	     	</ul>
+     	</form>
+     	</div>
+     	
+     	<div id="findPwdByPhone_div" style="display:none;">
+        <form id="findPwdByPhone_form" action="/Findpwd/bymobile" method="post">
+	        <ul class="ul_li" style="background:none; margin-top:20px; padding-left:160px; width:750px; float:left;">
+		    	<li style="width:750px;">
+					<span class="ul_span">手机号码:</span> 
+					<div class="c_li_1">
+						<input id="phone" name="phone" type="text" maxlength="11" />
+					</div>
+				</li>
+				<li style="width:750px;">
+					<span class="ul_span">验证码:</span>
+					<div class="c_li_1" style="width:135px;">
+						<input id="phonecode" name="phonecode" type="text" style="width:130px;" maxlength="4" />
+					</div>
+					<p class="m_1">
+						<img id="valicodeforimage_phone" src="/Login/getvalicode" onclick="this.src='/Login/getvalicode/' + Math.round(Math.random()*10000)" alt="点击更新验证码"  />
+					</p>
+					<span id="js_findbyphone_tips" style="float:left; width:500px; margin-left:124px; line-height:25px; height:25px; color:#999; display:none;"></span>
+				</li>
+				<li class="l_denglu1">
+					<input id="findPwdByPhone_btn" name="findPwdByPhone_btn" style="cursor:pointer; background:url(/static/images/home/login/t_88.png) no-repeat;" type="button" />
+				</li>
+	     	</ul>
+     	</form>
+     	</div>
+     	
+    	<p class="info">若您无法使用上述方法找回，请联系客服400-112-5689</p>
+    </div>
+</div>
+<!-- 找回密码  end -->
+
+<!--  引入底部   start -->
+<include file="Common/footer_login" />
+<!--  引入底部   end -->
+
+<script type="text/javascript" src="__ROOT__/static/js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+	//找回密码（邮箱和手机切换）
+	$("#findPwdByEmail_a").click(function(){
+		$("#findPwdByEmail_div").show();
+		$("#findPwdByPhone_div").hide();
+		$(this).removeClass("ui-button-blue").addClass("ui-button-orange");
+		$("#findPwdByPhone_a").removeClass("ui-button-orange").addClass("ui-button-red");
+	});
+	$("#findPwdByPhone_a").click(function(){
+		$("#findPwdByEmail_div").hide();
+		$("#findPwdByPhone_div").show();
+		$(this).removeClass("ui-button-red").addClass("ui-button-orange");
+		$("#findPwdByEmail_a").removeClass("ui-button-orange").addClass("ui-button-blue");
+	});
+	//邮箱验证
+	$("#email").focusin(function(){
+		$("#js_findbyemail_tips").css({color: '#999'}).text('必须为账号绑定的邮箱地址').show();
+	}).focusout(function(){
+		var v = $(this).val();
+		checkEmail(v);
+	});
+	//邮箱相关验证码验证
+	$("#emailcode").focusin(function(){
+		$("#js_findbyemail_tips").css({color: '#999'}).text('验证码长度必须为4位').show();
+	}).focusout(function(){
+		var v = $(this).val();
+		checkEmailCode(v);
+	});
+	//通过邮箱找回密码
+	$("#findPwdByEmail_btn").click(function(){
+		var email = $("#email").val(),
+			emailcode = $("#emailcode").val();
+		if(checkEmail(email) && checkEmailCode(emailcode)){
+			$("#findPwdByEmail_btn").attr("disabled", true);
+			$("#findPwdByEmail_form").submit();
+			//$("#valicodeforimage_email").trigger("click");	
+		}
+	});
+	//手机验证
+	$("#phone").focusin(function(){
+		$("#js_findbyphone_tips").css({color: '#999'}).text('必须为账号绑定的手机号码').show();
+	}).focusout(function(){
+		var v = $(this).val();
+		checkPhone(v);
+	});
+	//手机相关验证码验证
+	$("#phonecode").focusin(function(){
+		$("#js_findbyphone_tips").css({color: '#999'}).text('验证码长度必须为4位').show();
+	}).focusout(function(){
+		var v = $(this).val();
+		checkPhoneCode(v);
+	});
+	//通过手机找回密码
+	$("#findPwdByPhone_btn").click(function(){
+		var phone = $("#phone").val(),
+			phonecode = $("#phonecode").val();
+		if(checkPhone(phone) && checkPhoneCode(phonecode)){
+			$("#findPwdByPhone_btn").attr("disabled", true);
+			$("#findPwdByPhone_form").submit();
+			//$("#valicodeforimage_phone").trigger("click");	
+		}
+	});
+});
+//检测电子邮箱地址是否合法
+function checkEmail(v){
+	var email = $.trim(v),
+		len = email.length;
+	$("#js_findbyemail_tips").css({'color':'#f00'}).text('').hide();
+	if(len==0){
+		$("#js_findbyemail_tips").css({'color':'#f00'}).text('请输入邮箱地址').show();
+		return false;
+	}else{
+		if(email_patrn.test(email)){
+			return true;
+		}else{
+			$("#js_findbyemail_tips").css({'color':'#f00'}).text('邮箱地址格式不正确').show();
+			return false;
+		}
+	}
+}
+//检测邮箱验证码格式
+function checkEmailCode(v){
+	var val = $.trim(v),
+		len = val.length;
+	$("#js_findbyemail_tips").css({'color':'#f00'}).text('').hide();
+	if(len==0){
+		$("#js_findbyemail_tips").css({'color':'#f00'}).text('请输入验证码').show();
+		return false;
+	}else if(len<4 || len>4){
+		$("#js_findbyemail_tips").css({'color':'#f00'}).text('验证码长度必须为4位').show();
+		return false;
+	}else{		
+		return true;
+	}
+}
+//检测手机号码是否合法
+function checkPhone(v){
+	var val = $.trim(v),
+		len = val.length;
+	$("#js_findbyphone_tips").css({'color':'#f00'}).text('').hide();
+	if(len==0){
+		$("#js_findbyphone_tips").css({'color':'#f00'}).text('请输入手机号码').show();
+		return false;
+	}else{
+		if(phone_patrn.test(v)){
+			return true;
+		}else{
+			$("#js_findbyphone_tips").css({'color':'#f00'}).text('手机号码格式不正确').show();
+			return false;
+		}
+	}
+}
+//检测手机验证码格式
+function checkPhoneCode(v){
+	var val = $.trim(v),
+		len = val.length;
+	$("#js_findbyphone_tips").css({'color':'#f00'}).text('').hide();
+	if(len==0){
+		$("#js_findbyphone_tips").css({'color':'#f00'}).text('请输入验证码').show();
+		return false;
+	}else if(len<4 || len>4){
+		$("#js_findbyphone_tips").css({'color':'#f00'}).text('验证码长度必须为4位').show();
+		return false;
+	}else{		
+		return true;
+	}
+}
+</script>
+</body>
+</html>

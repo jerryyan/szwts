@@ -1,0 +1,159 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>添加银行卡 - 网投所</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="网投所，深圳网投所，网络理财，理财产品，借贷网络平台，抵押贷款，投资理财" />
+<meta name="description" content="网投所" />
+<link href="__ROOT__/static/css/global.css" rel="stylesheet" type="text/css" />
+<link href="__ROOT__/static/css/center/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__ROOT__/static/js/jquery.js?version=1.7.1"></script>
+<script type="text/javascript" src="__ROOT__/static/js/plugins/layer.min.js?version=1.8.4"></script>
+<script type="text/javascript" src="__ROOT__/static/js/common.js"></script>
+</head>
+
+<body>
+<div style="width:620px; height:480px; background: none repeat scroll 0 0 #fff; border: 1px solid #dadada;">  
+	<div class="ui-dialog">
+		<div class="content_right">
+	   		<div class="yhfd_title">添加银行卡</div>
+	       	<div class="yhk_nr" style="width:620px;">
+		       	<div class="tjyhk">
+		        	<form action="" method="get" class="yhk_form">
+		            	<div class="yhk_y">
+		                    <span><a style="color:#f80000; height:22px; float:left; margin-left:44px; padding-top:2px;">*</a>开户名</span> 
+		                    <div class="y_text"><?php echo ($tempData['realname']); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请添加相同开户名的银行卡</div>
+		                </div>
+		                <div class="clear"></div>
+		                <div class="yhk_e">
+		                	<span><a style=" height:22px; float:left; margin-left:30px; padding-top:2px; color:#f80000;">*</a>选择银行</span>
+		                    <div id="divselect" class="se_1" style="width:160px;">
+								<span tid="0" style="text-align:left;">请选择</span>
+		                        <ul style="width:180px;display:none;"> 
+		                           	<?php echo ($tempData['ul_li']); ?>          
+		                        </ul>
+						    </div>
+		                </div>
+		                <div class="clear"></div>
+		                <div class="yhk_s" style="margin:22px 0;">
+		                	<span><a style="color:#f80000; height:26px; padding-top:2px; float:left; margin-left:30px;">*</a>开户支行</span>
+		                	<div class="khy_1"></div>
+		                    <input id="branch" name="branch" type="text" class="khy_2" />
+		                    <div class="khy_3"></div>
+		                </div>
+		                <div class="yhk_s">
+		                	<span><a style="color:#f80000; height:26px; padding-top:2px; float:left; margin-left:30px;">*</a>银行卡号</span>
+		                	<div class="khy_1"></div>
+		                    <input id="account" name="account" type="text" class="khy_2" />
+		                    <div class="khy_3"></div>
+		                </div>
+		                <div class="clear"></div>
+		                <div class="yhk_s" style="margin:22px 0;">
+		                	<span><a style="color:#f80000; height:26px; padding-top:2px; float:left; margin-left:30px;">*</a>确认卡号</span>
+		                	<div class="khy_1"></div>
+		                    <input id="account_confirm" name="account_confirm" type="text" class="khy_2" />
+		                    <div class="khy_3"></div>
+		                </div>
+		                <div class="yhk_last">
+		                	<input id="bankBtn" name="bankBtn" type="button" value="" class="yhk_xzbtn" />
+		                </div>
+		            </form>
+		       	</div>
+		       	<div class="wx_title" style="width:620px;">
+		        	<div class="wx" style="width:580px;">温馨提示</div>
+		            <p>1、如果您填写的开户行支行不正确，可能将无法成功提现，由此产生的提现费用将不予返还。</p>
+					<p>2、如果您不确定开户行支行名称，可打电话到所在地银行的营业网点询问或上网查询。</p>
+					<p>3、不支持提现至信用卡账户。</p>
+		       	</div>
+	       	</div>  
+		</div> 
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	//下拉列表
+	$.DivSelect("#divselect", "se_2");
+	//格式化输入的银行卡号
+	$.bankInput("#account"); 
+	$.bankInput("#account_confirm");
+	//提交数据
+	$("#bankBtn").click(function(){
+		var obj = {},
+			account = $("#account").val(),
+			account_confirm = $("#account_confirm").val();
+		obj.bank = $("#divselect span").attr('tid');
+		obj.branch = $("#branch").val();
+		obj.bank_name = $("#divselect span").text();
+		if(checkBank(obj.bank) && checkBranch(obj.branch) && 
+				checkAccount(account) && checkAccountConfirm(account_confirm)){
+			obj.account = account.NoSpace();
+			$.ajax({
+				url: '__GROUP__/Bankinfo/save',
+				type: 'post',
+				data: obj,
+				dataType: 'json',
+				beforeSend: function(){
+					$("#bankBtn").attr('disabled', true);
+				},
+				success: function(p){
+					$("#bankBtn").attr('disabled', false);					
+					if(p.state==1){
+						layer.alert(p.msg, 1);
+						parent.location.reload();
+					}else{
+						layer.alert(p.msg, 8);
+						return false;
+					}		
+				}
+			});		
+		}
+	});
+});
+function checkBank(v){
+	if(v>0){
+		return true;
+	}else{
+		layer.alert('请选择开户银行', 8);
+		return false;
+	}
+}
+function checkBranch(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		layer.alert('开户支行不能为空', 8);
+		return false;
+	}else{
+		return true;
+	}
+}
+function checkAccount(value){
+	var v = value.NoSpace(),
+		len = str_length($.trim(v));
+	if(len==0){
+		layer.alert('银行卡号不能为空', 8);
+		return false;
+	}else if($.luhmCheck(v)){
+		return true;
+	}else{
+		layer.alert('银行卡号必须符合Luhm校验', 8);
+		return false;
+	}
+}
+function checkAccountConfirm(value){
+	var v = value.NoSpace(),
+		len = str_length($.trim(v)),
+		account = $("#account").val(),
+		act = account.NoSpace();
+	if(len==0){
+		layer.alert('请再次确认银行卡号', 8);
+		return false;	
+	}else if(act!=v){
+		layer.alert('两次卡号输入不一致', 8);
+		return false;
+	}else{
+		return true;
+	}
+}
+</script>
+</body>

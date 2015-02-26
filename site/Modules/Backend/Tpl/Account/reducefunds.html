@@ -1,0 +1,61 @@
+<style>
+#reduce_add_panel{margin:0;}  
+.ftitle{font-size:14px;  font-weight:bold;  color:#666;  padding:5px 0;  margin-bottom:10px;  border-bottom:1px solid #ccc;  }  
+.fitem{ width:100%; margin-bottom:15px; clear:both; float:left;}  
+.fitem label{  display:inline-block;  width:88px; float:left; text-align:right;}  
+.fitem .itemContent{float:left;}
+</style>
+<div id="reduce_add_panel">
+	<div id="reduce_add_layout">
+		<div title="平台添加充值" style="padding:10px 20px;">
+			<div class="fitem">
+				<label>用户名：</label>
+				<input name="username" type="text" />
+			</div>
+			<div class="fitem">
+				<label>扣除类型：</label>
+				<input name="type" type="radio" value="scene_ac" checked />现场认证费用
+				<input name="type" type="radio" value="vouch_advanced" />担保垫付扣费
+				<input name="type" type="radio" value="borrow_kouhui" />借款人罚金扣回
+				<input name="type" type="radio" value="ac_other" />其它扣费
+			</div>
+			<div class="fitem">
+				<label>扣除金额：</label>
+				<input name="money" type="text" />
+			</div>
+			<div class="fitem">
+				<label>备注：</label>
+				<textarea name="remark" style="width:200px;height:100px;"></textarea>
+			</div>	
+			<div style="margin:5px 30px;">
+				<a id="addReduceButton" class="easyui-linkbutton" iconCls="icon-save">保存</a> 
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$("#reduce_add_layout").tabs();
+
+$("#addReduceButton").click(function(){
+	var obj = {},
+		panel = $("#reduce_add_panel");
+	obj.username = panel.find("input[name='username']").val();
+	obj.type = panel.find("input[name='type']:checked").val();
+	obj.money = panel.find("input[name='money']").val();
+	obj.remark = panel.find("textarea[name='remark']").val();
+	if(obj.username!="" && obj.type!="" && obj.money!="" && obj.remark!=""){
+		$.post('__URL__/saveReduce', obj, function(data){
+			if(data>0){
+				alert('操作成功~');
+				panel.parent().window('close');
+				$("#account_log_datagrid").datagrid('reload');
+			}else{
+				alert('操作失败~');
+			}
+		});		
+	}else{
+		alert('提交信息不完整~');
+	}
+});
+</script>

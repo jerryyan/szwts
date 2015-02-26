@@ -1,0 +1,28 @@
+@charset "utf-8";
+body{ background:url(../../images/admin/login/b1.png);argin:0;padding:0;font-family: Arial, Helvetica, sans-serif;font-size:12px;color:#75a0b9;}
+body,div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td ,iframe{margin:0;padding:0;}
+.login{ background:url(../../images/admin/login/b22.png) center no-repeat;height:500px; padding-top:300px; display: block;  width:100%;  }
+.lo_1{ width:68px; border:1px solid #bcd3e1; margin-left:6px;}
+.lo_22{ float:left; margin-left:295px;margin-top:46px;}
+.lo_2{ width:1000px; margin:0 auto; clear:both;}
+.lo_3 { float:left; margin-right:22px;}
+.lo_33 { float:left; margin-right:4px;}
+.lo_4 { width:65px; height:22px; border:0px; background:url(../../images/admin/login/b4.png); float:right; margin-right:48px;}
+.lo_5{ float:right; width:42px; margin-top:40px;}
+a {
+	color:#75a0b9;
+	text-decoration:none;
+}
+a:hover{
+	color:#75a0b9;
+	text-decoration: note;
+}
+ul  li{
+	list-style:none;
+}
+img {
+	border:none;
+}
+.clear {
+	clear:both;
+}

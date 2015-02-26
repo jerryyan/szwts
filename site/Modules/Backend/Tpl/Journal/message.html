@@ -1,0 +1,70 @@
+<div id="message_panel" style="height:600px;">
+<div style="padding:10px 20px;" class="selectPanel">
+<div style="margin-bottom:8px;">
+	类型：
+	<select name="message_type">
+		<option value="-1">--请选择--</option>
+		<option value="0">系统消息</option>
+		<option value="1">平台消息</option>
+	</select>
+	发件人：<input name="sent_user" type="text" /> 
+	收件人：<input name="receive_user" type="text" />
+	开始时间：<input name="start_time" type="text" class="date mr20 Wdate" onclick="WdatePicker();" style="color:#666;"/>
+	结束时间：<input name="end_time" type="text" class="date mr20 Wdate" onclick="WdatePicker();" style="color:#666;"/>
+	<a class="easyui-linkbutton" iconCls="icon-search" id="js_searchMessageBtn">搜索</a>
+</div>
+</div>
+<table id="message_datagrid"></table>
+</div>
+
+<script>
+$("#message_datagrid").datagrid({
+	title: '站内信日志列表',
+	fit:true,
+	nowrap: false,
+	striped: true,
+	collapsible:false,
+	url: '__URL__/getMessageList',
+	pagination:true,
+	rownumbers:true,
+	singleSelect:true,
+	fitColumns:true,
+	pageSize:20,
+	columns: [[ 
+		{title:'ID', field:'id', width:30, sortable:true},
+		{title:'发件人', field:'send_uname', width:30, sortable:true},
+		{title:'收件人', field:'receive_uname', width:30, sortable:true},
+		{title:'标题', field:'name', width:60, sortable:true},
+		{title:'内容', field:'content', width:60, sortable:true},
+		{title:'状态', field:'status', width:60, sortable:true, formatter:function(val, rec){
+			if(val==0)return '未读';
+			if(val==1)return '已读';
+		}},
+		{title:'类型', field:'type', width:60, sortable:true, formatter:function(val, rec){
+			if(val==0)return '系统消息';
+			if(val==1)return '平台消息';
+		}},
+		{title:'添加时间', field:'atime', width:60, sortable:true},
+		{title:'添加ip', field:'addip', width:30, sortable:true}
+	]]
+});
+
+$("#message_panel").find("select[name='message_type']").change(function(){
+	getMessageList();
+});
+
+$("#js_searchMessageBtn").click(function(){
+	getMessageList();
+});
+
+function getMessageList(){
+	var obj = {},panel = $("#message_panel");
+		obj.type = panel.find("select[name='message_type']").find('option:selected').val();
+		obj.send_uname = panel.find("input[name='sent_user']").val();
+		obj.receive_uname = panel.find("input[name='receive_user']").val();
+		obj.start_time = panel.find("input[name='start_time']").val();
+		obj.end_time = panel.find("[input[name='end_time']").val();
+	$("#message_datagrid").datagrid('load', obj);
+}
+
+</script>

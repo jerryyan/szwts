@@ -1,0 +1,93 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	 	<div class="tjyhk_title">已添加银行卡</div>
+	    <div class="yhk_tjyhk">
+	    	<ul class="tjyh_ul">
+	    	<volist name="list" id="v">
+	        	<li tid="">
+	            	<p class="yh_zs"><img src="/static/{$v['pic']}" width="142" height="40" /></p>
+	                <p class="yh_s">{$v['account_hide']}</p>
+	                <p class="yh_x">
+	                	<a tid="{$v['id']}" name="js_update_bank" href="javascript:void(0);" class="xg">修改</a>
+	                	<a tid="{$v['id']}" name="js_delete_bank" href="javascript:void(0);" class="sc">删除</a>
+	                </p>
+	            </li>
+	       	</volist>	                        
+	            <li>
+	            	<p class="yh_xzk"><img src="/static/images/center/tjyhk.jpg" width="197" height="43" /></p>
+	                <p class="tjyh"><a id="js_add_bank" style="cursor:pointer;" href="javascript:void(0);" class="xg">新增银行卡</a></p>
+	            </li>
+	        </ul>
+	    </div>
+	    <div class="clear"></div>
+  	</div>
+  		
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#js_add_bank").click(function(){		
+		$.layer({
+		    type: 2,
+		    maxmin: false,
+		    shadeClose: false,
+		    title: false,
+		    shade: [0.5, 'rgb(255, 255, 255)'],
+		    offset: [($(window).height() - 580)/2+'px', ''], //上下垂直居中
+		    area: ['620px', '480px'],    
+		    iframe: {src: '__GROUP__/Bankinfo/add', scrolling: 'no', frameborder: "no"}
+		});		
+	});
+	$("a[name='js_update_bank']").click(function(){
+		var _this = $(this);
+		$.layer({
+		    type: 2,
+		    maxmin: false,
+		    shadeClose: false,
+		    title: false,
+		    shade: [0.5, 'rgb(255, 255, 255)'],
+		    offset: [($(window).height() - 580)/2+'px', ''], //上下垂直居中
+		    area: ['620px', '430px'],    
+		    iframe: {src: '__GROUP__/Bankinfo/modify/id/'+_this.attr('tid'), scrolling: 'no', frameborder: "no"}
+		}); 
+	});
+	$("a[name='js_delete_bank']").click(function(){
+		var _this = $(this);
+		layer.confirm("确认要删除此记录吗？删除后将不可恢复", function(index){		
+			$.ajax({
+				url: '__GROUP__/Bankinfo/delete',
+				type: 'get',
+				data: "id="+_this.attr('tid'),
+				dataType: 'json',
+				success: function(p){
+					if(p.state==1){
+						layer.alert(p.msg, 1);
+						location.reload();
+					}else{
+						layer.alert(p.msg, 8);
+						return false;
+					}
+				}
+			});
+		});
+	});
+});
+</script>
+</body>
+</html>

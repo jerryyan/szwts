@@ -1,0 +1,62 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+ 
+	<div class="content_right">
+		<div class="zdtb_title">平台信息</div>
+        <div class="scxx_bg" style="margin-left:10px;">       	
+           	<table border="0">
+	            <tr class="tr_01">
+	              	<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">平台名称</td>
+	              	<td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">绑定状态</td>
+	              	<td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">绑定用户名</td>
+	              	<td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">账户类型</td>
+	              	<td class="t_3"height="40" align="center" valign="middle" bgcolor="#ececec">绑定时间</td>
+	            </tr>
+	            <if condition='($tempData[num] gt 0)'>
+	            <volist name="list" id="v">
+	            <tr class="tr_01">
+	                <td class="t_2" align="center" valign="middle">{$v['name']}</td>
+	                <td class="t_2" align="center" valign="middle">
+	                <if condition='($v[status] eq 1)'>
+	                	已绑定
+	                <else />
+	               	 	未绑定
+	                </if>
+	                </td>
+	                <td class="t_2" align="center" valign="middle">{$v['username']|default='-'}</td>
+	                <td class="t_2" align="center" valign="middle">{$v['type']|default='-'}</td>
+	                <td class="t_2" align="center" valign="middle">{$v['addtime']|date='Y-m-d H:i:s', ###|default='-'}</td>
+	            </tr>
+	            </volist>
+	            <else />
+	            <tr class="tr_01">
+	            	<td class="t_2">暂无数据</td>
+	            </tr>
+	            </if>
+	       	</table>
+	   	</div>
+	   	<!-- 分页 开始-->
+	    <div class="pagelist">
+            {$page}
+	    </div>	
+		<div class="clear"></div>
+    </div>
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+
+</body>
+</html>

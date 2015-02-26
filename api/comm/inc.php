@@ -1,0 +1,2 @@
+<?php die('forbidden'); ?>
+{"appid":"101004175","appkey":"22063ff5e1a410de6a5f7aaf31800fc4","callback":"http://www.wangtousuo.com/Home/Login/qq_callback","scope":"get_user_info,get_info,add_t,del_t,add_pic_t,get_repost_list,get_other_info,get_fanslist,get_idollist,add_idol,del_idol","errorReport":true,"storageType":"file","host":"localhost","user":"root","password":"123456","database":"zyzib"}

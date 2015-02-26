@@ -1,0 +1,31 @@
+<include file="Common/header" />
+<!--  引入头部   end -->
+
+<!-- 内容区 开始-->
+<div id="content">
+	<div class="leftsidebar">
+    	<h3><a href="javascript:void(0);">关于我们</a></h3>
+        <ul>
+        <volist name="menus" id="v">
+			<li><a href="__URL__/index/id/{$v.id}.html" class="<if condition='($v[id] eq $article_result[id])'>mover</if>">{$v.name}</a></li>
+		</volist>
+        </ul>
+	</div>
+	<div class="rightcontent">
+    	<div class="about_title">{$article_result.name|default=''}</div>	
+        <div class="about_content">
+        	{$article_result.content|default=''}
+        </div>              
+    </div>
+</div>
+<!-- 内容区 结束-->
+
+<div class="clear"></div>
+
+
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+	
+	<div class="content_right">
+	
+        <h2>安全信息</h2>
+        <div class="rznr" style=" border:0px;">
+		  	<div class="form_nr">
+                <div class="input_nr" style="margin-bottom:15px;">
+                	<span style="width:90px; text-align:right;"><a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:22px;">*</a>真实姓名</span>
+                	<span>{$tempData['user_result']['realname']}</span>
+                </div>
+                <div class="input_nr" style="margin-bottom:15px;">
+                	<span style="width:90px; text-align:right;"><a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:50px;">*</a>性别</span>
+                	<span>
+                		<if condition='($tempData[user_result][sex] eq 1)'>
+                			男
+                		<else />
+                			女
+                		</if>
+					</span>
+                </div>
+				<div class="input_nr" style="margin-bottom:15px;">
+					<span style="width:90px; text-align:right;">
+					<a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:22px;">*</a>身份证号</span>
+					<span>{$tempData['user_result']['card_id']}</span>
+				</div>
+				
+                <div class="input_nr">
+                	<span style="width:105px; text-align:right;"><a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:22px;">*</a>身份证正面</span>
+                </div> 
+               	<div class="shanchuang" style=" padding-bottom:0px;">
+                	<div class="z2"><img src="/static/{$tempData['user_result']['card_pic1']}" height="157" /></div>
+                </div>
+                
+                <div class="input_nr">
+                	<span style="width:105px; text-align:right;"><a style=" float:left; color:#F00; height:28px; font:14px '微软雅黑'; padding-top:2px; margin-left:22px;">*</a>身份证反面</span>
+                </div> 
+               	<div class="shanchuang" style=" padding-bottom:0px;">
+                	<div class="z2"><img src="/static/{$tempData['user_result']['card_pic2']}" height="157" /></div>
+                </div>
+                
+                <div style="font-size:14px; line-height:25px; padding-left:20px; margin-top:10px; color:#f00;">你的资料已提交，正在审核中....</div>
+		  	</div>
+        </div>
+        
+  	</div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#realname").focusin(function(){
+		$("#js_realname_tips").css({'color':'#666'}).text('请输入您的真实姓名');
+	}).focusout(function(){
+		checkRealName();
+	});
+	$("#card_id").focusin(function(){
+		$("#js_cardid_tips").css({'color':'#666'}).text('请正确输入您的二代身份证号码');
+	}).focusout(function(){
+		checkCard();
+	});
+	$("#realnameBtn").click(function(){
+		var obj = {};
+		obj.realname = $("#realname").val();
+		obj.card_id = $("#card_id").val();
+		obj.card_pic1 = $("#textUploadUrl_1").val();
+		obj.card_pic2 = $("#textUploadUrl_2").val();
+		if(checkRealName() && checkCard() && checkPic1(obj.card_pic1) && checkPic2(obj.card_pic2)){
+			$.ajax({
+				url: '__GROUP__/Realname/verify',
+				type: 'post',
+				data: obj,
+				dataType: 'json',
+				beforeSend: function(){
+					$("#realnameBtn").attr('disabled', true);
+				},
+				success: function(p){
+					$("#realnameBtn").attr('disabled', false);
+					$("#js_submit_tips").text(p.msg);
+					if(p.state==1){
+						location.href = '__GROUP__/Safeinfo';
+					}else{
+						return false;
+					}			
+				}
+			});	
+		}
+	});
+});
+function checkRealName(){
+	var _this = $("#realname"),
+		v = _this.val(),
+		len = str_length($.trim(v)),
+		check = str_chinese(v);
+	if(len>0){
+		if(check){
+			$("#js_realname_tips").text('');
+			return true;
+		}else{
+			$("#js_realname_tips").css({'color':'#f00'}).text('包含非法字符');
+			return false;
+		}	
+	}else{
+		$("#js_realname_tips").css({'color':'#f00'}).text('真实姓名不能为空');
+		return false;
+	}
+}
+function checkCard(){
+	var _this = $("#card_id"),
+		v = _this.val(),
+		len = str_length($.trim(v));
+	if(len>0){
+		if(card_patrn.test(v)){
+			$("#js_cardid_tips").text('');
+			return true;
+		}else{
+			$("#js_cardid_tips").css({'color':'#f00'}).text('身份证号码格式不正确');
+			return false;
+		}
+	}else{
+		$("#js_cardid_tips").css({'color':'#f00'}).text('身份证号码不能为空');
+		return false;
+	}
+}
+function checkPic1(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_cardpic1_tips").css({color:"#f00"}).text("请上传身份证正面照片");
+		return false;
+	}else{
+		$("#js_cardpic1_tips").text("");
+		return true;
+	}
+}
+function checkPic2(v){
+	var len = str_length($.trim(v));
+	if(len==0){
+		$("#js_cardpic2_tips").css({color:"#f00"}).text("请上传身份证反面照片");
+		return false;
+	}else{
+		$("#js_cardpic2_tips").text("");
+		return true;
+	}
+}
+</script>
+</body>
+</html>

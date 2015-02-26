@@ -1,0 +1,113 @@
+<include file="Common/header_login" />
+<!--  引入头部   end -->
+
+<!-- 关联  start -->
+<div class="guanlian" style="background:none;">
+    <div class="g_d">
+        <div id="js_relation_menu_reg" class="g_1">注册中源资本账号</div>
+        <div id="js_relation_menu_login" class="g_2">已有中源资本账号</div>
+    </div>
+    
+    <div id="js_relation_reg">
+	    <div class="k_1">
+	    	<span>
+	    		<strong style="color:#F00;">{$tempData['nickname']}</strong> 请完善您在中源资本的个人信息，以完成与第三方账号的绑定。若您已在中源资本注册了账户，请
+	    		<strong><a style="color:#F00;" href="/Login/index.html">点击这里</a></strong>
+	    	</span>
+	    </div>
+		<div class="cen_tt">
+	        <ul class="ul_li" style="padding-top:40px; padding-left:1px; background:url('') no-repeat  right 40px;">
+	            <li style="width:850px;">
+	            	<span class="ul_span">用户名:</span>
+	            	<div class="c_li_1"><input id="uname" name="uname" type="text" maxlength="16" /></div>
+	            	<span id="js_uname_tips" class="ul_span3"></span>
+	            </li>
+	             <li style="width:850px;">
+	            	<span class="ul_span">密  码:</span>
+	            	<div class="c_li_1"><input id="upwd" name="upwd" type="password" oncopy="return false" onpaste="return false" maxlength="20" /></div>
+	            	<span id="js_upwd_tips" class="ul_span3"></span>
+	            </li>
+	             <li style="width:850px;">
+	            	<span class="ul_span">确认密码:</span>
+	            	<div class="c_li_1"><input id="upwd_confirm" name="upwd_confirm" type="password" oncopy="return false" onpaste="return false" maxlength="20" /></div>
+	            	<span id="js_upwd_confirm_tips" class="ul_span3"></span>
+	            </li>
+	             <li style="width:850px;">
+	            	<span class="ul_span">验证码:</span>
+	            	<div class="c_li_1" style="width:135px;"><input id="valicode" name="valicode" type="text" style="width:130px;" maxlength="4" /></div>
+	           		<p class="m_1"><img id="valicodeforimage" src="__URL__/getvalicode" onclick="this.src='__URL__/getvalicode/' + Math.round(Math.random()*10000)" alt="点击更新验证码" width="105" height="36" /></p>
+	           		<span id="js_valicode_tips" class="ul_span3"></span>
+	           		
+	           	</li>
+	            <li style="margin-left:125px;height:35px;margin-top:10px;color:#666;">
+	            	<input id="check_confirm" name="check_confirm" type="checkbox" checked style="margin-left:5px;" /> 
+	            	点击注册即同意网投所<a style="color:#f00;" href="">《用户协议》</a>
+	            </li>
+	            <li class="l_denglu">
+	            	<input id="registerTo" name="registerTo" type="button" style="cursor:pointer" />
+	            	<span id="js_submit_tips" class="ul_span3" style="margin-left:45px;margin-top:5px;width:305px;"></span>
+	            </li>
+	        </ul>  
+	    </div>
+    </div>
+    
+    <div id="js_relation_login" class="l_center_01" style="display:none;">
+        <ul class="ul_li" style="width:480px; padding-left:100px; background:none; margin-top:80px;">
+            <li>
+            	<span class="ul_span">用户名</span>
+            	<div class="c_li_1">
+            		<input id="oauth_id" name="oauth_id" type="hidden" value="{$tempData['oauth_id']|default=0}" />
+            		<input id="uname_l" name="uname_l" type="text" placeholder="用户名" maxlength="20" />
+            	</div>			              
+            	<span id="js_uname_l_tips" class="input_tips"></span>
+            </li>
+            <li>
+            	<span class="ul_span">密  码</span>
+            	<div class="c_li_1">
+            		<input id="upwd_l" name="upwd_l" type="password" maxlength="20" oncopy="return false" onpaste="return false" placeholder="密码" />
+            	</div>
+            	<span id="js_upwd_l_tips" class="input_tips"></span>
+            </li>
+            <li>
+            	<span class="ul_span">验证码</span>
+            	<div class="c_li_1" style="width:140px;">
+            		<input id="valicode_l" name="valicode_l" style="width:130px;" type="text" maxlength="4" placeholder="验证码" />
+            	</div>
+            	<p class="m_1"><img id="valicodeforimage_l" src="__URL__/getvalicode" onclick="this.src='__URL__/getvalicode/' + Math.round(Math.random()*10000)" alt="点击更新验证码" width="105" height="36" /></p>
+            	<span id="js_valicode_l_tips" class="input_tips"></span>
+            </li>
+            <li class="l_denglu1">
+            	<input id="loginTo" name="loginTo" type="button" style="cursor:pointer;" />
+            	<span class="d_s"><a href="/Findpwd.html">忘记密码</a></span>
+            </li>
+		</ul>
+    </div>
+    
+</div>
+<!-- 关联  end -->
+
+<!--  引入底部   start -->
+<include file="Common/footer_login" />
+<!--  引入底部   end -->
+
+<script type="text/javascript" src="__ROOT__/static/js/common.js"></script>
+<script type="text/javascript" src="__ROOT__/static/js/home/login.js"></script>
+<script type="text/javascript" src="__ROOT__/static/js/home/register.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#js_relation_menu_reg").click(function(){
+		$(this).attr("class", "g_1");
+		$("#js_relation_menu_login").attr("class", "g_2");
+		$("#js_relation_reg").show();
+		$("#js_relation_login").hide();
+	});
+	$("#js_relation_menu_login").click(function(){
+		$(this).attr("class", "g_1");
+		$("#js_relation_menu_reg").attr("class", "g_2");
+		$("#js_relation_reg").hide();
+		$("#js_relation_login").show();
+	});
+});
+</script>
+</body>
+</html>

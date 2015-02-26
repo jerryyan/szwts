@@ -1,0 +1,124 @@
+<?php if (!defined('THINK_PATH')) exit();?><div id="linkage_type_panel" style="height:600px;">
+<div style="padding:10px 20px;" class="selectPanel">
+<div style="margin-bottom:8px;">
+	类型名称：<input name="name" type="text" />
+	类型代码：<input name="nid" type="text" />
+	<a class="easyui-linkbutton" iconCls="icon-search" id="js_searchLinkageTypeBtn">搜索</a>
+</div>
+</div>
+<table id="linkage_type_datagrid"></table>
+</div>
+
+<script>
+$("#linkage_type_datagrid").datagrid({
+	title: '平台操作类型列表',
+	fit:true,
+	nowrap: false,
+	striped: true,
+	collapsible:false,
+	url: '__URL__/getTypeList',
+	pagination:true,
+	rownumbers:true,
+	singleSelect:true,
+	fitColumns:true,
+	pageSize:20,
+	toolbar: [{
+		text: '新增类型',
+		iconCls: 'icon-add',
+		handler: function(){
+			$.addWindow($("#linkage_type_panel"), {
+				title: '新增操作类型',
+				href: '__URL__/addtype',
+				closable: true,
+				minimizable: false,
+				modal: true,
+				width: 600,
+				cache: false
+			});
+		}
+	}, '-', {
+		text: '编辑/查看',
+		iconCls: 'icon-edit',
+		handler: function(){
+			var selected = $("#linkage_type_datagrid").datagrid("getSelected");
+			if(!selected){
+				$.messager.alert('系统提示','请选择操作项');
+				return false;
+			}
+			$.addWindow($("#linkage_type_panel"), {
+				title: '编辑/查看操作类型',
+				href: '__URL__/edittype/id/'+selected.id,
+				closable: true,
+				minimizable: false,
+				modal: true,
+				width: 600,
+				cache: false
+			});
+		}
+	}, '-', {
+		text: '删除',
+		iconCls: 'icon-remove',
+		handler: function(){
+			var selected = $("#linkage_type_datagrid").datagrid("getSelected");
+			if(!selected){
+				$.messager.alert('系统提示','请选择操作项');
+				return false;
+			}
+			if(confirm("请谨慎操作，确认要删除此条记录吗？")){
+				var obj = {};
+				obj.id = selected.id;
+				$.get('__URL__/delType', obj, function(data){
+					if(data>0){
+						alert('操作成功~');
+						$("#linkage_type_datagrid").datagrid('reload');
+					}else{
+						alert('操作失败~');
+					}
+				});		
+			}
+		}
+	}],
+	columns: [[ 
+		{title:'ID', field:'id', width:30, sortable:true},
+		{title:'类型名称', field:'name', width:60, sortable:true},
+		{title:'类型代码', field:'nid', width:60, sortable:true},
+		{title:'添加时间', field:'atime', width:60, sortable:true},
+		{title:'添加ip', field:'addip', width:60, sortable:true},
+		{title:'更新时间', field:'utime', width:60, sortable:true},
+		{title:'更新ip', field:'updateip', width:60, sortable:true},
+		{title:'操作人', field:'op_username', width:60, sortable:true}
+	]]
+});
+
+$("#js_searchLinkageTypeBtn").click(function(){
+	getLinkageTypeList();
+});
+
+function getLinkageTypeList(){
+	var obj = {},panel = $("#linkage_type_panel");
+		obj.name = panel.find("input[name='name']").val();
+		obj.nid = panel.find("input[name='nid']").val();
+	$("#linkage_type_datagrid").datagrid('load', obj);
+}
+
+function addTab(sTitle,sUrl){
+	var tab=$('#tt').tabs("getTab",sTitle);	
+	if(tab==null || tab==undefined){
+		$("#tt").tabs("add",{
+			title:sTitle,
+			closable:true,
+			href:sUrl
+		});	
+	}else{
+		$("#tt").tabs('update',{
+	        tab: tab,
+	        options: {
+	        	href:sUrl
+	        }
+	    });
+		$("#tt").tabs("select",sTitle);
+	    tab.panel('refresh'); 
+	}
+}
+
+</script>

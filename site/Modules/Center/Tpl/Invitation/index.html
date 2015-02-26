@@ -1,0 +1,113 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+ 
+	<div class="content_right">
+        <h2>佣金提现</h2>	
+    	<div class="zq_bg">
+	       	<div class="yaoqing">
+	           <textarea class="yao_1" cols="40" rows="3" id="inviteText">http://www.wangtousuo.com/Register/index/u/{$invite_userid}</textarea> 
+			   <input id="copyText" class="fuzhi" type="button" value="复制邀请链接" />
+	        </div>
+	   	  	<div class="yaoqing">
+	               <p>【推荐奖励】已推荐人数：<strong style="color:#900; font-size:18px;">{$tempData['num']} </strong> 人，获得奖励：<strong style="color:#090; font-size:18px;">{$tempData['sum_money']} </strong>元</p>
+	               <p>【投资奖励】<strong style="color:#090; font-size:18px;">0</strong> 元</p>
+	               <p>【提现金额】提现申请中金额数：<strong style="color:#f66; font-size:18px;">{$tempData['no_use_money']} </strong>元，已经提现成功金额：<strong style="color:#C06; font-size:18px;">{$tempData['cash_money']|default=0} </strong>元，现拥有可提现金额：<strong style="color:#ff6600; font-size:18px;">{$tempData['use_money']} </strong>元</p>
+	               <p> 成功推荐1人并在活动期间有投资行为产生奖励15元，单笔提现金额不能低于10元<a href="__GROUP__/Cash/extraction.html"><input class="fuzhi_1" style="margin-right:12px;" type="button" value="奖励提现" /></a></p>
+	       	</div>
+      	</div>
+		<div class="scxx_bg" style="margin-left:10px;">
+       	  	<table width="730" border="0" cellspacing="0" cellpadding="0" style=" font-size:12px; font-family: Arial; width:732px; text-align:center;">
+    	  		<tr class="tr_01">
+           	  		<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">注册人名称</td>
+	               	<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">手机认证</td>
+               	  	<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">邮箱认证</td>
+               	  	<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">身份证认证</td>
+               	  	<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">是否投资</td>
+               	  	<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">奖励（元）</td>
+	               	<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">注册时间</td>
+	           	</tr>
+	           	<if condition='($tempData[num] gt 0)'>
+	           	<volist name="list" id="v">
+	           	<tr class="tr_01">
+            	  	 <td class="t_2" align="center">{$v.username}</td>
+	               	 <td class="t_2" align="center">
+						<if condition='($v[phone_status] eq 1)'>
+							已认证
+						<else />
+							未认证
+						</if>
+					 </td>
+	               	 <td class="t_2" align="center">
+	               		<if condition='($v[email_status] eq 1)'>
+							已认证
+						<else />
+							未认证
+						</if>
+	               	 </td>
+	               	 <td class="t_2" align="center">
+	               		<if condition='($v[real_status] eq 1)'>
+							已认证
+						<else />
+							未认证
+						</if>
+					 </td>
+	               	 <td class="t_2" align="center">
+	               		<if condition='($v[is_tender] eq 1)'>
+							已投资
+						<else />
+							未投资
+						</if>	               	 	
+					 </td>
+	               	 <td class="t_2" align="center">{$v.invite_money}</td>
+	               	 <td class="t_2" align="center">{$v.addtime|date='Y-m-d H:i:s', ###}</td>
+	           	</tr>
+	           	</volist>
+	           	<else />
+	           	<tr class="tr_01">
+					<td class="t_2" colspan="7">暂无数据</td>
+				</tr>
+	           	</if>
+           	</table>
+            </div>
+                      
+   	  		<div style="width:730px; margin-left:10px;  border:1px solid #d3d4d6; padding:10px 0; text-align:center; border-top:none;">
+          		<div class="last_list">
+					{$page}
+                </div>    
+          	</div> 
+  
+    </div>
+    
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#copyText").click(function(){
+		var Url2 = document.getElementById("inviteText"); 
+		if (document.all){
+		   	window.clipboardData.setData("text", Url2.innerText)
+		   	layer.alert("邀请好友注册链接已经复制成功，您可以使用Ctrl+V粘贴发送给好友", 1);
+			Url2.select(); // 选择对象 
+		}else{
+			alert("此功能只能在IE上有效\n\n您可以使用Ctrl+C进行复制", 8);
+			Url2.select(); // 选择对象 
+		}
+	});
+});
+</script>
+</body>
+</html>

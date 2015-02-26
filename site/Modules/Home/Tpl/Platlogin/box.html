@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网投所-用户登录</title>
+<link href="__ROOT__/static/css/global.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__ROOT__/static/js/jquery.js?version=1.7.1"></script>
+<script type="text/javascript" src="__ROOT__/static/js/plugins/layer.min.js?version=1.8.4"></script>
+</head>  
+
+<body style="background:#FFF; ">
+<div class="ui-dialog" style="height:280px;  width: 400px;border:0px; padding-bottom:30px; background:#FFF; margin:0 auto;">
+	<div class="d_lu">登录网投所账号</div>
+		<div class="denglu_2"><span>一站式搞定多个平台投资<br />还能享受网投所的保障服务哦！</span>
+			<div class="zjdl">
+            <input class="zj_1" type="button" value="立即登录" />
+            <input class="zj_2" type="button" invest_url="{$tempData['invest_url']}" value="直接去平台" />
+    		</div>
+		</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(".zj_1").click(function(){
+		parent.location.href = '/Login.html';
+	});
+	$(".zj_2").click(function(){
+		var invest_url = $(this).attr("invest_url");
+		window.open(invest_url);
+	});
+});
+</script>
+</body>
+</html>

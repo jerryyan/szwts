@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'user_id', 1 => 'total', 2 => 'use_money', 3 => 'no_use_money', 4 => 'last_modify_time', '_autoinc' => false, '_pk' => 'user_id', '_type' => array ( 'user_id' => 'int(11)', 'total' => 'decimal(11,2)', 'use_money' => 'decimal(11,2)', 'no_use_money' => 'decimal(11,2)', 'last_modify_time' => 'timestamp', ), );?>

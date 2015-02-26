@@ -1,0 +1,109 @@
+@charset "utf-8";
+body{margin:0;padding:0;font: 14px/1.8 "Microsoft YaHei",Arial;}
+body,div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td ,iframe{margin:0;padding:0;}
+a {
+	color:#333;
+	text-decoration:none;
+}
+a:hover{
+	color:#333;
+	text-decoration: note;
+}
+ul  li{
+	list-style:none;
+}
+img {
+	border:none;
+}
+.clear {
+	clear:both;
+}
+
+/* zuce End */
+.heard{ width:100%; background:url(/static/images/home/login/t_1.png) repeat-x; height:32px; line-height:32px; color:#555;}
+.heard_01{ width:960px; margin:0 auto; clear:both; }
+.heard_01 span{ font-size:12px; text-align:right; float:left; }
+
+/* logo End */
+.logo{  margin:0 auto; clear:both; background-color:#FFF; width:100%; border-bottom:2px solid #db2f29;}
+.logo_01{width:960px; padding-top:20px; padding-bottom:25px;height:70px;  overflow:hidden;  margin:0 auto;}
+.l_center{border-right:0px;height:500px; margin:0 auto; clear:both; }
+.logo_01 span{ font-size:16px;  float:right; color:#555; line-height:70px; height:70px;}
+.logo_01 img{ float:left;}
+.l_center_01{ width:1000px; margin:0 auto; clear:both;}
+.cen_t{background:url(/static/images/home/login/t_33.png) no-repeat #FFF; height:43px;}
+.cen_t1{background:url(/static/images/home/login/t_33.png) no-repeat #FFF 0px -50px; height:43px;}
+.cen_t2{background:url(/static/images/home/login/t_33.png) no-repeat #FFF 0px -103px; height:43px;}
+.ul_li{ height:auto; padding-left:480px; display:block; float:left; width:550px; background:url(/static/images/home/login/fx.jpg) no-repeat 8px -20px; margin-top:80px;}
+.ul_li li{ width:550px; float:left; text-align:left; height:70px; }
+.c_li_1{ width:305px; float:left; height:38px; text-indent:5px; line-height:32px; color:#999; font-size:14px;}
+.c_li_1 input{ width:305px;background:url(/static/images/home/login/d_1.png) no-repeat; height:38px;border:1px solid #b3b3b3;text-indent:5px; line-height:32px; color:#999; font-size:14px; }
+.ul_span{ width:110px; text-align:right; font-size:14px; line-height:38px; float:left; color:#333; margin-right:15px;}
+.ul_s{ color:#F00; text-indent:10px; line-height:32px; width:180px; padding-left:117px; float:left;}
+.input_tips{ color:#F00; text-indent:10px; line-height:32px; width:370px; padding-left:121px; float:left;}
+.m_1{ float: left; margin-top:2px; margin-left:8px;}
+.l_denglu input{ background:url(/static/images/home/login/zc.jpg) no-repeat; width:188px; height:37px; border:0px; margin-left:45px; display:inline;}
+.l_right{ padding-top:80px; color:#333; }
+.l_right img{ float:left; margin-right:5px;}
+.ul_span1{ color:#999; width:300px; float:left; padding-left:125px; padding-top:5px;} 
+.ul_span2{ color:#ff0000; width:300px; float:left; padding-left:125px; padding-top:5px;}
+.ul_span3{ color:#666; float:left;  padding-top:5px; background: none repeat scroll 0 0 hsl(0, 0%, 97%);
+    border: 1px solid hsl(0, 0%, 93%);
+    height: 38px;
+    line-height: 38px;
+    padding: 0 8px; border:1px solid #ccc; margin-left:10px; display:none;}
+
+.w_b{ border-top:1px solid #dedede; float:right; margin-right:115px; width:306px; padding-top:25px; }
+.w_b p{ float:left;}
+.k_x{ background:url(/static/images/home/login/yes.jpg) no-repeat; width:19px; height:17px; float:left; margin-left:10px; margin-top:10px;}
+.k_x1{ background:url(/static/images/home/login/no.jpg) no-repeat; width:19px; height:17px; float:left; margin-left:10px; margin-top:10px;}
+.cen_y{ width:960px; margin:0 auto; clear:both;}
+
+/* renzheng End */
+.sji_r{ background:url(/static/images/home/login/s_j.jpg) no-repeat; margin-left:120px; width:425px; height:70px; line-height:60px; float: left;}
+.sji_r span{ font-size:12px; color:#c5c5c5; padding-left:60px; font-weight:normal;float: left;}
+.yx_r span{ font-size:12px; color:#c5c5c5; padding-left:80px; margin-top:10px;font-weight:normal;float: left;}
+.yx_r{ background:url(/static/images/home/login/e_mail.jpg) no-repeat; width:200px; margin-top:20px; height:50px; float: left;}
+.sy{ width:800px; float: left; padding:20px; margin:20px 0px 0px 70px; padding-bottom:5px; margin-bottom:5px;}
+
+/* guanlian End */
+.guanlian{ width:958px; margin:0 auto; clear:both; height:700px; background: url(/static/images/home/login/gl.jpg) no-repeat 540px 300px #FFF; border:1px solid #ccc;}
+.g_1{ width:220px; height:45px; font-size:16px; background:#FFF; border-right:1px solid #ccc; float:left;  line-height:44px; text-align:center;cursor:pointer;}
+.g_2{width:220px; height:44px; background:#f3f3f3;font-size:16px; line-height:44px; float:left;text-align:center; border-right:1px solid #ccc; cursor:pointer; }
+.k_1{ width:900px; float:left; padding:10px; text-align:left; color:#333; margin:30px 0px 0px 20px;}
+.g_d{ height:44px; border-bottom:1px solid #ccc; background: #f3f3f3;}
+.c_wan{ background:url(/static/images/home/login/c_g1.jpg) no-repeat center; width:990px; height:200px;}
+.c_wan span{ font-size:22px; font-family:"微软雅黑"; color:#F00; text-align:center; width:990px; float:left; margin-top:170px;}
+
+/* denglu End */
+.c_h3{ font-size:22px; font-family:"微软雅黑"; font-weight:normal; padding-top:30px; padding-left:38px; color:#333;}
+.l_denglu{ width:500px; height:334px; margin-left:80px; display:inline; }
+.l_denglu1 input{  float:left; width:305px; height:46px; border:0px;  margin-top:5px; background:#cf3942; margin-left:128px;  border-radius:4px; font-size:20px; font-family:"微软雅黑"; color:#FFF; text-align:center; }
+.l_denglu1 p{ float:left; line-height:35px; margin-left:75px; margin-top:10px;}
+.l_denglu1 img{ float: left; margin-right:3px; margin-top:7px;}
+.d_s{ line-height:15px;font-size:12px; float:right; color:#666;  padding-top:20px; padding-right:120px;}
+.d_s a{ color:#F00;font-size:12px;}
+
+/* foot End */
+.foot{ width:100%; margin:0 auto; clear:both; background:#333; height:90px;  color:#ccc; text-align:center; margin-top:190px;}
+.ffoot{ width:960px; text-align:center; margin:0 auto; line-height:45px; padding-top:10px;}
+
+.ffoot a{ margin-left:20px; color:#FFF;}
+.foot span{ text-align:center;  font-size:12px;}
+/* zhaomima End */
+.ui-button {border-radius: 2px;cursor: pointer; display: inline-block; padding: 0 15px;text-align: center;text-decoration: none;vertical-align: middle; color:#FFF;}
+.ui-button-mid {border-radius: 15px;font-size: 16px; height: 30px;  line-height: 30px;min-width: 50px;text-align: center;}
+.ui-button-blue { background:#2e92d2; border: 0 none; color:#FFF;border-radius: 15px;font-size: 16px; height: 30px;  line-height: 30px;min-width: 50px;text-align: center;height: 40px;line-height: 40px;margin: 20px;cursor: pointer; display: inline-block; padding: 0 15px;text-align: center;text-decoration: none;vertical-align: middle; }
+.ui-button-orange{ background:#ff6600; border: 0 none; color:#FFF;border-radius: 15px;font-size: 16px; height: 30px;  line-height: 30px;min-width: 50px;text-align: center;height: 40px;line-height: 40px;margin: 20px;cursor: pointer; display: inline-block; padding: 0 15px;text-align: center;text-decoration: none;vertical-align: middle; }
+.ui-button-red {  background:#db2f29; border: 0 none; color:#FFF;border-radius: 15px;font-size: 16px; height: 30px;  line-height: 30px;min-width: 50px;text-align: center;height: 40px;line-height: 40px;margin: 20px;cursor: pointer; display: inline-block; padding: 0 15px;text-align: center;text-decoration: none;vertical-align: middle; }
+
+.type a{ color:#FFF;}
+.type {text-align: center;}
+.type .ui-button { height: 40px;line-height: 40px;margin: 20px;}
+.info{ width:1000px; margin:0 auto; clear:both;text-align: center; color:#999;	 }
+.l_center_01 h4{ font-size:22px; text-align:center; color:#666; margin-top:40px;}
+.fanhui{ width:960px; text-align:center; float:left; margin-top:30px;}
+.fanhui span{ background:#ff6600; color:#FFF; width:120px; height:30px; cursor:pointer; padding:5px 30px 8px 30px; font-family:"微软雅黑"; font-size:16px; border-radius: 10px;}
+.fanhui a{ color:#FFF;}
+.cw1{text-align:center; font-family:'微软雅黑'; font-size:20px; background:url(/static/images/home/login/c_01.png) no-repeat; padding-left:40px; color:#555;}
+.cw2{text-align:center; font-family:'微软雅黑'; font-size:20px; background:url(/static/images/home/login/c_2.png) no-repeat; padding-left:40px; color:#555;}

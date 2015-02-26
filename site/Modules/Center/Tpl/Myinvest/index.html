@@ -1,0 +1,109 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+ 
+	<div class="content_right">
+    	<h2>投资记录</h2>
+	    <div class="tj_a1">
+	        <span>您累计投资了<strong style="color:#0baf07">{$tempData['sum_amount']|default=0}</strong> 元</span>	        
+	        <span>网投所帮您赚了 <strong style="color:#f00">{$tempData['sum_rate']|default=0}</strong> 元</span>	        
+	        <span>您当前的投资年化收益率为: <strong style="color:#ff00d8">{$tempData['rate_now']|default=0}</strong> %</span>
+	        <span>您的收益是宝宝的 <strong style="color:#d58c00;">{$tempData['compare']|default=0}</strong> 倍!</span>
+		</div>
+        <div class="czjl_nr">
+            <form action="__GROUP__/Myinvest/index.html" method="post" class="mx_form">
+                <div class="mx_y">
+                    <span>投资时间:</span>
+                    <input type="text" name="start" class="mx_dc" onclick="WdatePicker({skin:'default'});" value="{$tempData['start']|default=''}" />
+                    &nbsp;到&nbsp;
+                    <input type="text" name="end" class="mx_dc" onclick="WdatePicker({skin:'default'});" value="{$tempData[end]|default=''}" />
+                </div>
+                <div class="mx_e" style="margin-left:10px;">
+                    <div id="divselect" class="se_1" style="width:130px; float:left; ">
+                      	<span tid="{$tempData['selectValue']|default='0'}">{$tempData['selectText']|default='所有记录'}</span>
+						<input name="selectValue" type="hidden" value="{$tempData['selectValue']|default='0'}" />
+						<input name="selectText" type="hidden" value="{$tempData['selectText']|default='所有记录'}" />
+                        <ul style="width:150px; height:110px; top:25px; display:none;"> 
+                       		<if condition='($tempData[selectValue] neq "")'>
+                       		<li tid='-1'>所有记录</li>
+                       		</if>
+                        	<li tid='0'>还款中</li>
+                        	<li tid='1'>已还完</li>
+                        	<li tid='2'>已逾期</li>
+                       	</ul>
+                    </div>
+                </div>
+                <input style=" position:absolute; margin-left:80px; margin-top:2px;" type="submit" name="search" value="" class="mx_btn" />
+            </form>
+        </div>
+		<div class="clear"></div>    
+		<div class="scxx_bg">
+			<table border="0" align="left">
+				<tr class="tr_01"> 	 	 
+					<td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">订单号</td>  
+                    <td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">平台名称</td>
+                    <td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">项目名称</td>
+                    <td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">投资金额</td>
+                    <td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">投资期限</td>
+                    <td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">投资时间</td>
+                    <td class="t_3" height="40" align="center" valign="middle" bgcolor="#ececec">交易状态</td>
+				</tr>
+				<if condition='($count gt 0)'>
+				<volist name="list" id="v">
+				<tr class="tr_01"> 	 	 
+					<td class="t_2" align="center" valign="middle">{$v['order_id']}</td>
+                    <td class="t_2" align="center" valign="middle">{$v['platform_name']}</td>
+                    <td class="t_2" align="center" valign="middle">{$v['project_name']}</td>
+                    <td class="t_2" align="center" valign="middle">{$v['amount']}</td>
+                    <td class="t_2" align="center" valign="middle">
+                    <if condition='($v[isday] eq 1)'>
+                    {$v['term']}天
+                    <else />
+                    {$v['term']}个月
+                    </if>
+                    </td>
+                    <td class="t_2" align="center" valign="middle">{$v['addtime']|date='Y-m-d', ###}</td>
+                    <td class="t_2" align="center" valign="middle">
+					<if condition='($v[state] eq 0)'>
+						还款中
+					<elseif condition='($v[state] eq 1)' />
+						已还完
+					<elseif  condition='($v[state] eq 1)' />
+						已逾期
+					</if>
+					</td>
+				</tr>
+				</volist>
+				<else />
+				<tr class="tr_01"><td class="t_2" colspan="7">暂无数据</td></tr>
+				</if>	 	 	 	 	 	 	
+			</table>
+		</div>
+		<div class="pagelist">
+			{$page}
+		</div> 		 		
+	</div>
+	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript" src="__ROOT__/static/js/admin/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.DivSelect("#divselect", "se_2", "selectValue", "selectText");
+});
+</script>
+</body>
+</html>

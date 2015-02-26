@@ -1,0 +1,93 @@
+<?php if (!defined('THINK_PATH')) exit();?><div id="advert_modules_panel" style="height:600px;">
+<div style="padding:10px 20px;" class="selectPanel">
+<div style="margin-bottom:8px;">
+	状态：
+	<select name="status">
+		<option value="-1">--请选择--</option>
+		<option value="0">隐藏</option>
+		<option value="1">显示</option>
+	</select>
+	<a class="easyui-linkbutton" iconCls="icon-search" id="js_searchAdvertModulesBtn">搜索</a>
+</div>
+</div>
+<table id="advert_modules_datagrid"></table>
+</div>
+
+<script>
+$("#advert_modules_datagrid").datagrid({
+	title: '广告模块列表',
+	fit:true,
+	nowrap: false,
+	striped: true,
+	collapsible:false,
+	url: '__URL__/getModulesList',
+	pagination:true,
+	rownumbers:true,
+	singleSelect:true,
+	fitColumns:true,
+	pageSize:20,
+	toolbar: [{
+		text: '新增',
+		iconCls: 'icon-add',
+		handler: function(){
+			$.addWindow($("#advert_modules_panel"), {
+				title: '新增广告模块',
+				href: '__URL__/addmodules',
+				closable: true,
+				minimizable: false,
+				modal: true,
+				width: 600,
+				cache: false
+			});
+		}
+	}, '-', {
+		text: '编辑/查看',
+		iconCls: 'icon-edit',
+		handler: function(){
+			var selected = $("#advert_modules_datagrid").datagrid("getSelected");
+			if(!selected){
+				$.messager.alert('系统提示','请选择操作项');
+				return false;
+			}
+			$.addWindow($("#advert_modules_panel"), {
+				title: '修改广告模块信息',
+				href: '__URL__/editmodules/id/'+selected.id,
+				closable: true,
+				minimizable: false,
+				modal: true,
+				width: 600,
+				cache: false
+			});
+		}
+	}],
+	columns: [[ 
+		{title:'ID', field:'id', width:30, sortable:true},
+		{title:'模块', field:'modules', width:60, sortable:true},
+		{title:'模块名称', field:'modules_name', width:60, sortable:true},
+		{title:'状态', field:'status', width:20, sortable:true, formatter:function(val, rec){
+			if(val==0)return "隐藏";
+			if(val==1)return "显示";
+		}},
+		{title:'添加时间', field:'atime', width:60, sortable:true},
+		{title:'添加ip', field:'addip', width:60, sortable:true},
+		{title:'更新时间', field:'utime', width:60, sortable:true},
+		{title:'更新ip', field:'updateip', width:60, sortable:true},
+		{title:'操作员', field:'op_username', width:20, sortable:true}
+	]]
+});
+
+$("#advert_modules_panel").find("select[name='status']").change(function(){
+	getAdvertModulesList();
+});
+
+$("#js_searchAdvertModulesBtn").click(function(){
+	getAdvertModulesList();
+});
+
+function getAdvertModulesList(){
+	var obj = {},panel = $("#advert_modules_panel");
+		obj.status = panel.find("select[name='status']").find("option:selected").val();
+	$("#advert_modules_datagrid").datagrid('load', obj);
+}
+
+</script>

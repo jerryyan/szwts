@@ -1,0 +1,26 @@
+<include file="Common/header" />
+<!--  引入头部   end -->
+
+<div class="ui-dialog" style="height:190px; padding-top:15px;  width: 958px;border:0px; padding-bottom:180px; padding-top:150px; background:#FFF; margin:0 auto; border:1px solid #ccc;">
+    <div class="u_left"><img src="/static/images/home/fxx.jpg" /></div>
+    <div class="u_right"><span>使用网投所用户登录</span>
+        <p><input id="js_platform_to" type="button" value="进入平台" class="wts-b-button"></p>
+        <p> <b style="color:#F00;">温馨提示：</b> 通过网投所家进入平台进行投资，可以享受网投所的保障服务 </p>
+    </div>    
+    <div class="s_y">使用已有{$platform_name}账户  <strong><a href="{$platform_login_bind_url}">登录</a></strong></div> 
+</div>
+
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+
+<script type="text/javascript">
+$(function(){
+	$("#js_platform_to").click(function(){
+		location.href = '{$platform_reg_bind_url}';
+	});
+});
+</script>
+
+</body>
+</html>

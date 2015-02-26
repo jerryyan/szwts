@@ -1,0 +1,97 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+	<!-- 左侧菜单   start -->
+	<include file="Common/left" />
+	<!-- 左侧菜单   end -->
+ 
+	<div class="content_right">
+    	<h2>提现记录<a href="__GROUP__/Cash/extraction.html"> <input class="fuzhi_1" style="margin-right:10px;" type="button" value="提现" /></a></h2>
+    	<div class="scxx_bg"  style="margin-left:10px;">
+			<table width="730"  border="0" align="left">
+				<tr class="tr_01"> 	 	  	 	 	
+					<td width="83" height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">提现银行</td>
+                    <td width="149"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">提现账号</td>
+                    <td width="86"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">提现总额</td>
+                    <td width="71"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">到账金额</td>
+                    <td width="66" height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">手续费</td>
+                    <td width="122"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">提现时间</td>
+                    <td width="64"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">状态</td>
+                    <td width="55"height="40" align="center" valign="middle" bgcolor="#ececec" class="t_3">操作</td>
+				</tr>
+				<if condition='($tempData[num] gt 0)'>
+				<volist name="list" id="v"> 	 	 	 	 	 	 	
+                <tr class="tr_01">
+                    <td class="t_2" align="center" valign="middle">{$v['bank_name']} </td>
+                    <td class="t_2" align="center" valign="middle">{$v['account']}</td>
+                    <td class="t_2" align="center" valign="middle">¥{$v['total']}</td>
+                    <td class="t_2" align="center" valign="middle">¥{$v['money']}</td>
+                    <td class="t_2" align="center" valign="middle">¥{$v['fee']}</td>
+                    <td class="t_2" align="center" valign="middle">{$v['addtime']|default=''|date='Y-m-d', ###}</td>
+                    <td class="t_2" align="center" valign="middle">
+                        <if condition='($v[status] eq 0)'>
+                        	审核中
+                        <elseif condition='($v[status] eq 1)' />
+                        	审核通过
+                        <elseif condition='($v[status] eq 2)' />
+                        	审核失败
+                        <else/>
+                        	提现取消
+                        </if>
+					</td>
+                    <td class="t_2" align="center" valign="middle">
+                    	<if condition='($v[status] eq 0)'>
+							<a href="javascript:void(0);" onclick="cancel({$v['id']})">取消提现</a>
+						<else />
+							-
+						</if>
+					</td>
+       			</tr>  
+       			</volist> 
+       			<else />
+       			<tr class="tr_01">
+					<td class="t_2" colspan="8">暂无数据</td>
+				</tr> 
+       			</if>   
+            </table>
+		</div>
+		
+		<div class="pagelist">
+			{$page}
+        </div>
+    </div>
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+<script type="text/javascript">
+function cancel(id){
+	layer.confirm("确认要取消该笔提现吗？", function(index){
+		$.ajax({
+			url: '__GROUP__/Cash/cancel',
+			type: 'get',
+			data: "id="+id,
+			dataType: 'json',
+			success: function(p){
+				if(p.state==1){
+					layer.alert(p.msg, 1);
+					location.reload();
+				}else{
+					layer.alert(p.msg, 8);
+					return false;
+				}
+			}
+		});
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'user_id', 1 => 'platform_id', 2 => 'relation_name', 3 => 'addtime', 4 => 'addip', '_autoinc' => false, '_pk' => 'platform_id', '_type' => array ( 'user_id' => 'int(11)', 'platform_id' => 'int(11)', 'relation_name' => 'varchar(50)', 'addtime' => 'int(11)', 'addip' => 'varchar(15)', ), );?>

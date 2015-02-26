@@ -1,0 +1,117 @@
+<include file="Common/header" />
+<!-- 头部   end -->
+
+<!-- 右侧内容   start -->
+<div id="content">
+
+    <!-- 左侧菜单   start -->
+    <include file="Common/left" />
+    <!-- 左侧菜单   end -->
+
+    <div class="content_right">
+        <div class="message_title"><span>个人基础信息</span></div>
+        <div class="message_content">
+            <div class="left_img"><img id="imageUploadUrl_1" src="/static/{$tempData['user_result']['avatar']|default='images/center/message_img.jpg'}" width="98" height="98" />          
+                <div style="margin-top:15px;">
+                    <input id="textUploadUrl_1" type="hidden" />
+                    <iframe name="iframeUpload" src="__GROUP__/Upload/page/type/avatar/id/1" width="100px" height="30px" frameborder="no" scrolling="no"></iframe>
+                    <span id="iframeUploadPanel_1"></span>
+                </div>           
+            </div>
+            <div class="right_text">
+                <ul class="me_center">
+                    <li>
+                        <span class="left_me">
+                            <a style="margin-left:18px;height:19px; padding-top:3px; float:left; font:14px '微软雅黑'; color:#F00;">*</a>用户名</span>
+                        <span class="center_me">{$tempData['user_result']['username']}</span>
+                    </li>
+                    <li>
+                        <span class="left_me"><a style=" height:19px; padding-top:3px; float:left; font:14px '微软雅黑'; color:#F00; margin-left:2px;">*</a>真实姓名</span>
+                        <span class="center_me">{$tempData['user_result']['realname']|default=""}</span>
+                        <span class="right_me">
+
+                            <if condition='($tempData["user_result"]["real_status"] eq 1) and ($tempData["user_result"]["card_type"] eq 1) '>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_icon.jpg" width="16" height="16" /></a>已认证
+                            </if>
+                            <if condition='($tempData["user_result"]["real_status"] eq 0) and ($tempData["user_result"]["card_type"] eq 1)'>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Realname/see.html" style=" color:#f95e57;">审核中</a>
+                            </if>
+                            <if condition='($tempData["user_result"]["real_status"] eq 0) and ($tempData["user_result"]["card_type"] eq 0) '>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Realname.html" style=" color:#f95e57;">去认证</a>
+                            </if>
+                            <if condition='($tempData["user_result"]["real_status"] eq 2 )'>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Realname.html" style=" color:#f95e57;">认证失败</a>
+                            </if>
+
+
+                        </span>
+                    </li>
+                    <li>
+                        <span class="left_me"><a style=" height:19px; padding-top:3px; float:left; font:14px '微软雅黑'; color:#F00; margin-left:2px;">*</a>身份证号</span>
+                        <span class="center_me">{$tempData['user_result']['card_id']|default=""}</span>
+                        <span class="right_me">
+
+                            <if condition='($tempData["user_result"]["real_status"] eq 1) and ($tempData["user_result"]["card_type"] eq 1) '>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_icon.jpg" width="16" height="16" /></a>已认证
+                            </if>
+                            <if condition='($tempData["user_result"]["real_status"] eq 0) and ($tempData["user_result"]["card_type"] eq 1)'>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Realname/see.html" style=" color:#f95e57;">审核中</a>
+                            </if>
+                            <if condition='($tempData["user_result"]["real_status"] eq 0) and ($tempData["user_result"]["card_type"] eq 0) '>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Realname.html" style=" color:#f95e57;">去认证</a>
+                            </if>
+                            <if condition='($tempData["user_result"]["real_status"] eq 2 )'>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Realname.html" style=" color:#f95e57;">认证失败</a>
+                            </if>
+
+                        </span>
+                    </li>
+                    <li>
+                        <span class="left_me"><a style=" height:19px; padding-top:3px; float:left; font:14px '微软雅黑'; color:#F00; margin-left:2px;">*</a>手机号码</span>
+                        <span class="center_me">{$tempData['user_result']['phone']|default=""}</span>
+                        <span class="right_me">
+
+                            <if condition='($tempData["user_result"]["phone_status"] eq 1)'>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_icon.jpg" width="16" height="16" /></a>已绑定
+                                <else />
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Mobile/bind.html" style="color:#f95e57;">去认证</a>
+                            </if>
+
+                        </span>
+                    </li>
+                    <li>
+                        <span class="left_me"><a style=" height:19px; padding-top:3px; float:left; font:14px '微软雅黑'; color:#F00; margin-left:2px;">*</a>邮箱地址</span>
+                        <span class="center_me">{$tempData['user_result']['email']||default=""}</span>
+                        <span class="right_me">
+
+                            <if condition='($tempData["user_result"]["email_status"] eq 1)'>
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_icon.jpg" width="16" height="16" /></a>已绑定
+                                <else />
+                                <a style="float:left; margin:4px 4px 0 0; height:18px;"><img src="/static/images/center/me_hicon.jpg" width="16" height="16" /></a>
+                                <a href="__GROUP__/Email/bind.html" style=" color:#f95e57;">去认证</a>
+                            </if>
+
+                        </span>
+                    </li>
+                </ul>              
+            </div>
+        </div>
+    </div>	
+</div>
+<!-- 右侧内容   end -->
+
+<div class="clear"></div>
+
+<!-- 底部   start -->
+<include file="Common/footer" />
+<!-- 底部   end -->
+
+</body>
+</html>
