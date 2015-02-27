@@ -26,7 +26,7 @@ class InvestAction extends MainAction {
         //导出excel
         if (!empty($obj->operation)) {
             $status = array("还款中", "已还完", "已逾期");
-            $title = array("序号", "订单编号", "平台名称", "用户名", "真实姓名", "项目名称", "投资金额", "待收总额", "投资期限", "年化利率", "投资时间", "还款时间","交易状态");
+            $title = array("序号", "订单编号", "平台名称", "用户名", "真实姓名", "项目名称", "投资金额", "待收总额", "投资期限", "年化利率", "投资时间", "还款时间", "交易状态");
             foreach ($title as $k => $v) {
                 $title[$k] = iconv("utf-8", "gb2312", $v);
             }
@@ -46,7 +46,7 @@ class InvestAction extends MainAction {
                     $v[$k2] = iconv('utf-8', 'gbk', trim($v2));
                 }
                 $_data[$k] = array(
-                    $k + 1, $v['order_id'], $v['platform_name'], $v['username'], $v['realname'], $v['project_name'], $v['amount'], $v['wait_amount'], $v['term'], $v['rate'], $v['atime'],$v['etime'], $v['state']
+                    $k + 1, $v['order_id'], $v['platform_name'], $v['username'], $v['realname'], $v['project_name'], $v['amount'], $v['wait_amount'], $v['term'], $v['rate'], $v['atime'], $v['etime'], $v['state']
                 );
             }
             exportData(iconv('utf-8', 'gb2312', "客户投资记录"), $title, $_data);
@@ -196,6 +196,27 @@ class InvestAction extends MainAction {
             $options .= '<option value="' . $v['id'] . '">' . $v['name'] . '</option>';
         }
         return $options;
+    }
+
+    public function edit() {
+        $_q = getParams();       
+        if (!empty($_q->id)) {
+            $p_result = M("Tender_log")->where(array("order_id" => $_q->id))->find();            
+            $this->assign("tempData", $p_result);
+        }
+        $this->display();
+    }
+
+    //保存
+    public function save() {
+        $_q = getParams();
+        $data = array(
+            'amount' => $_q->amount,
+            'rate' => $_q->rate,
+            'wait_amount' => $_q->wait_amount,
+        );
+        $result = M("Tender_log")->where(array("order_id" => $_q->id))->data($data)->save();
+        echo $result;
     }
 
 }
