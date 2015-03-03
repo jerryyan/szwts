@@ -18,7 +18,7 @@ class IndexAction extends MainAction {
         $tempData = array(
             'sum_amount' => $sum_amount,
             'sum_rate' => $sum_rate,
-            'sum_reg_num' => $sum_reg_num+615
+            'sum_reg_num' => $sum_reg_num+653
         );
 
         $this->assign("tempData", $tempData);
