@@ -99,14 +99,16 @@ class MainAction extends Action {
             'news',
             'platform',
             'invest',
-            'about'
+            'about',
+            'answer'
         );
         $menu_nums = array(
             'index' => 1,
             'news' => 1,
             'platform' => 2,
             'invest' => 3,
-            'about' => 4
+            'about' => 4,
+            'answer'=>5
         );
         if (in_array($module_name, $menuArray)) {
             return $menu_nums[$module_name];

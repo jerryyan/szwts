@@ -1,7 +1,7 @@
 <div id="category_list_panel" style="height:670px;">
 <div style="padding:10px 20px;" class="selectPanel">
 <div style="margin-bottom:8px;"> 
-	标题：<input name="name" type="text" />
+	标题：<input name="title" type="text" />
 	是否列表：{$options}	
 	状态：
 	<select name="status">
@@ -51,6 +51,7 @@ $("#category_list_datagrid").datagrid({
 				$.messager.alert('系统提示','请选择操作项');
 				return false;
 			}
+                       
 			$.addWindow($("#category_list_panel"), {
 				title: '编辑/查看网站文章',
 				href: '__URL__/edit/id/'+selected.id,
@@ -85,18 +86,15 @@ $("#category_list_datagrid").datagrid({
 		}
 	}],
 	columns: [[
-		{title:'ID', field:'id', width:20, sortable:true},
-		{title:'模块名称', field:'modules_name', width:30, sortable:true},
-		{title:'标题', field:'title', width:100, sortable:true},
-		{title:'文章来源', field:'source', width:30, sortable:true},
+		{title:'ID', field:'id', width:20, sortable:true},		
+		{title:'名称', field:'name', width:100, sortable:true},		
 		{title:'状态', field:'status', width:20, sortable:true, formatter: function(v, r){
-			if(v==0)return '显示';
-			if(v==1)return '隐藏';
+			if(v==1)return '显示';
+			if(v==0)return '隐藏';
 		}},		
-		{title:'新增时间', field:'atime', width:60, sortable:true},
-		{title:'新增ip', field:'addip', width:60, sortable:true},
+		{title:'新增时间', field:'atime', width:60, sortable:true},		
 		{title:'更新时间', field:'utime', width:60, sortable:true},
-		{title:'更新ip', field:'updateip', width:60, sortable:true},	
+		{title:'操作人ip', field:'updateip', width:60, sortable:true},	
 		{title:'操作人', field:'op_username', width:20, sortable:true}
 	]]
 });

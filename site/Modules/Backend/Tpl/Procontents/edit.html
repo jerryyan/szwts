@@ -1,0 +1,72 @@
+<style>
+    #procontents_form_edit_panel{margin:0;}  
+    .ftitle{font-size:14px;  font-weight:bold;  color:#666;  padding:5px 0;  margin-bottom:10px;  border-bottom:1px solid #ccc;  }  
+    .fitem{  margin-bottom:16px; clear:both; }  
+    .fitem label{  display:inline-block;  width:80px; float:left; }  
+    .fitem .itemContent{float:left;}
+</style>
+<div id="procontents_form_edit_panel">
+    <div id="procontents_form_edit_layout">
+        <div title="问答类容基本信息" style="padding:10px 20px;">		
+            <div class="fitem">
+                <label>类别名称：</label>
+                <input type="text" name="title" value="{$tempData['title']}" size="35" />
+            </div>		
+            <div class="fitem">
+                <label>状态：</label>
+                <input type="radio" name="status" value="1" checked />显示&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="status" value="0" />隐藏
+            </div>
+            <div class="fitem">
+                <label>是否推荐：</label>
+                <input type="radio" name="is_recommend" value="1" checked />推荐&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="is_recommend" value="0" />未推荐
+            </div>
+            <div class="fitem">
+                <label>浏览量：</label>
+                <input type="text" name="pageviews" value="{$tempData['pageviews']}" size="35" />
+            </div> 
+        </div>	
+
+        <div title="详细描述" style="padding:10px 20px;">
+            <div style="padding:5px;">
+                <textarea name="content" style="width:500px;height:300px;">{$tempData['content']}</textarea>
+            </div>
+        </div>
+    </div>
+    <div style="margin:5px 30px;">
+        <input name="id" type="hidden" value="{$tempData['id']}" />
+        <a id="editArticlesButton" class="easyui-linkbutton" iconCls="icon-save">保存</a> 
+    </div>
+</div>
+
+<script>
+    $("#procontents_form_edit_layout").tabs();
+    $.loadEditor($("#procontents_form_edit_panel").find("[name='content']"));
+            $("#procontents_form_edit_panel").find("input[name='status'][value='" + {$tempData['status'] | default = 0} + "']").attr("checked", true);
+            $("#procontents_form_edit_panel").find("input[name='is_recommend'][value='" + {$tempData['is_recommend'] | default = 0} + "']"
+            ).attr("checked", true);
+            $("#editArticlesButton").click(function () {
+        var obj = {},
+                panel = $("#procontents_form_edit_panel");
+        obj.id = panel.find("input[name='id']").val();
+        obj.title = panel.find("input[name='title']").val();
+        obj.status = panel.find("input[name='status']:checked").val();
+        obj.is_recommend = panel.find("input[name='is_recommend']:checked").val();
+        obj.pageviews = panel.find("input[name='pageviews']").val();
+        obj.content = panel.find("textarea[name='content']").val();
+        if (obj.id > 0 && obj.pageviews > 0 && obj.title != "" && obj.status != "" && obj.is_recommend != "") {
+            $.post('__URL__/save', obj, function (data) {
+                if (data > 0) {
+                    alert('操作成功~');
+                    $("#procontents_form_edit_panel").parent().window('close');
+                    $("#procontents_list_datagrid").datagrid('reload');
+                } else {
+                    alert('操作失败~');
+                }
+            });
+        } else {
+            alert('提交数据不完整~');
+        }
+    });
+</script>

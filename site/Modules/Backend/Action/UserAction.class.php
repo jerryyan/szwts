@@ -40,7 +40,7 @@ class UserAction extends MainAction{
 		}
 		$this->display();
 	}
-	
+        
 	//检测用户名，邮箱和手机号码
 	public function checkUser(){
 		$_q = getParams();

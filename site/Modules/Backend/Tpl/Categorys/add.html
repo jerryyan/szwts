@@ -1,0 +1,52 @@
+<style>
+    #category_form_add_panel{margin:0;}  
+    .ftitle{font-size:14px;  font-weight:bold;  color:#666;  padding:5px 0;  margin-bottom:10px;  border-bottom:1px solid #ccc;  }  
+    .fitem{  margin-bottom:16px; clear:both; }  
+    .fitem label{  display:inline-block;  width:80px; float:left; }  
+    .fitem .itemContent{float:left;}
+</style>
+<div id="category_form_add_panel">
+    <div id="category_form_add_layout">
+        <div title="问答类别基本信息" style="padding:10px 20px;">		
+            <div class="fitem">
+                <label>类别名称：</label>
+                <input type="text" name="name" value="" size="35" />
+            </div>		
+            <div class="fitem">
+                <label>状态：</label>
+                <input type="radio" name="status" value="1" checked />显示&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="status" value="0" />隐藏
+            </div>
+            <div class="fitem">
+                <label>摘要：</label>
+                <textarea name="summary" cols="30" rows="4"></textarea>
+            </div>
+        </div>	
+    </div>
+    <div style="margin:5px 30px;">
+        <a id="addArticlesButton" class="easyui-linkbutton" iconCls="icon-save">保存</a> 
+    </div>
+</div>
+
+<script>
+    $("#category_form_add_layout").tabs();
+    $("#addArticlesButton").click(function () {
+        var obj = {}, panel = $("#category_form_add_panel");
+        obj.name = panel.find("input[name='name']").val();
+        obj.status = panel.find("input[name='status']:checked").val();
+        obj.summary = panel.find("textarea[name='summary']").val();
+        if (obj.name != "" && obj.summary != "") {
+            $.post('__URL__/save', obj, function (data) {
+                if (data > 0) {
+                    alert('操作成功~');
+                    $("#category_form_add_panel").parent().window('close');
+                    $("#category_list_datagrid").datagrid('reload');
+                } else {
+                    alert('操作失败~');
+                }
+            });
+        } else {
+            alert('提交数据不完整~');
+        }
+    });
+</script>

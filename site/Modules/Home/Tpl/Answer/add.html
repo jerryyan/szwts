@@ -1,0 +1,101 @@
+<include file="Common/header" />
+<!--  引入头部   end -->
+
+<!-- 内容区 开始-->
+<div id="content">
+    <div class="wrapper clearfix">
+        <div class="qa_container_spacing qa_question_container">
+            <div class="layout_n clearfix">
+                <!-- ask start -->
+                <div class="u_block qa_ask_form">
+                    <div class="u_block_bd qa_ask_form_wrap">
+                        <!-- form start -->
+                        <form class="qa_editor" action="addsave" method="post" id="question">                           
+                            <div class="field_row">
+                                <div class="label_info"><i class="ico ico_status_l ico_status_l_help"></i><b>请用一句话描述问题：</b></div>
+                                <div class="input_wrap clearfix">
+                                    <div class="input_control clearfix">
+                                        <input type="text" name="title" id="title" class="u_ipt u_ipt_active key_title" placeholder="例如：p2p投资门槛是多少？" value="">
+                                    </div>
+                                </div>
+                                <div class="qa_editor_head_error title_error" style="display: block;">
+                                    <span class="u_txt_tip u_txt_tip_warning">还没有填写问题</span>
+                                </div>
+                            </div>
+                            <div class="field_row">
+                                <div class="label_optional" style="cursor:pointer">添加详细描述（选填）</div>
+                                <div class="input_wrap clearfix" style="display: none;">
+                                    <div class="input_control clearfix">
+                                        <textarea name="content" id="a_content" cols="30" rows="10" class="u_textarea" placeholder="你可以在这里继续补充问题细节"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field_row qa_editor_extra clearfix">
+                                <div class="category input_wrap clearfix">
+                                    <label class="input_label"><b>分　类：</b></label>
+                                    <div class="input_control clearfix">
+                                        <div class="u_select cate_select" data-uid="0">
+                                            <div class="option_selected" onclick="javascript:$('.detail_warning').hide();
+                                                    $('.options_list').slideToggle('fast');">
+                                                <input type="hidden" class="value" name="category" id="cate" value="">
+                                                <span class="value" value="">选择一个分类</span>
+                                                <span class="caret"><i class="caret_inner"></i></span>
+                                            </div>
+                                            <ul class="options_list" style="display: none;">                                                
+                                                <volist name="categorys" id="data">
+                                                    <li class="option" value="{$data.id}"><a>{$data.name}</a></li>
+                                                </volist>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="u_txt_tip u_txt_tip_warning category_warning" style="display: none"><small>请选择一个分类</small></div>
+                                </div>
+                                <a class="u_btn u_btn_solid btn_submit" href="javascript:;">提交问题</a>
+                            </div>
+                            <div class="field_row detail_warning" style="display: none">
+                                <span class="u_txt_tip u_txt_tip_warning ">详细描述超过1000字，请重新输入</span>
+                            </div>
+
+                        </form>
+                        <!-- form end -->
+                    </div>
+                </div>
+                <!-- ask end -->
+            </div>
+            <!-- qa_question end -->
+        </div>
+    </div>
+</div>
+<!-- 内容区 结束-->
+
+<div class="clear"></div>
+<script type="text/javascript" src="__ROOT__/static/js/home/wenda.js"></script>
+
+<script>
+
+                                                $(".btn_submit").click(function () {
+                                                    var obj = {};
+                                                    obj.title = $("#title").val();
+                                                    obj.cate = $("#cate").val();
+                                                    obj.content = $("#a_content").val();
+                                                    if (obj.title != "" && obj.cate != "") {
+                                                        $.post('__URL__/save', obj, function (data) {
+                                                            if (data > 0) {
+                                                                //alert('操作成功~');
+                                                                location.href='__URL__/index';
+                                                            } else {
+                                                                alert('操作失败~');
+                                                            }
+                                                        });
+                                                    } else {
+                                                        alert('提交数据不完整~');
+                                                    }
+                                                });
+
+
+</script>
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+

@@ -1,0 +1,139 @@
+<include file="Common/header" />
+<!--  引入头部   end -->
+
+<!-- 内容区 开始-->
+<div id="content">
+    <div class="wrapper clearfix">
+        <div class="layout_w900 layout_main">
+            <!-- 问题详情 start -->
+            <div class="qa_question_detail" data-id="3588649" data-src="4">
+                <div class="qa_reserve_wrap">
+                    <div class="qa_question_cont">
+                        <!-- intro start -->
+                        <div class="qa_question_intro">
+                            <div class="pub_summary">
+                                <div class="pub_title"><b>{$tempData.title}</b></div>
+                                <div class="pub_meta clearfix">
+                                    <small class="meta_item">{$tempData.uptime}</small>
+                                    <small class="meta_item view_count">{$tempData.pageviews}次浏览</small>
+                                    <small class="meta_item view_count">{$tempData.answernum}次回答</small>
+                                    <small class="meta_item">提问者：{$tempData.username}</small>
+                                </div>
+                            </div>
+                            <div class="pub_description">
+                                <p>{$tempData.content}</p>
+                            </div>
+                        </div>
+                        <!-- intro end -->
+                        <!-- reply start -->             
+                        <div class="qa_question_reply">
+                            <div class="pub_reply_opened" data-ques="3062262" data-user="{$users.user_id}" data-answered="" style="display: block;">
+                                <a class="btn_reply_now" href="javascript:;" data-dialog="register" id="answerBtn">我来回答</a>
+                            </div>
+                            <div class="pub_reply hide not_answer" style="display: none;">
+                                <div class="pub_reply_wrap">
+                                    <i class="dual_caret"><i class="dual_caret_bd"><i class="dual_caret_bg"></i></i></i>
+                                    <textarea name="" id="textarea" cols="30" rows="10" class="u_textarea u_textarea_nofocus" value="">{$thisanswer.content}</textarea>
+                                    <input name="con_id" id="thiscon_id" type="hidden"  value="{$tempData.id}"/>
+                                    <input name="id" id="thisid" type="hidden"  value="{$thisanswer.id}"/>
+                                    <div class="pub_reply_control clearfix">
+                                        <div class="reply_btn">
+                                            <a class="u_btn u_btn_hollow btn_cancel" href="javascript:;">取消回答</a>
+                                            <a class="u_btn u_btn_solid btn_confirm" href="javascript:;">提交回答</a>
+                                        </div>
+                                        <div class="reply_tip">
+                                            <small class="u_txt_tip u_txt_tip_warning empty_error" style="display: none;">您还没有填入回答内容</small>
+                                            <small class="u_txt_tip u_txt_tip_warning full_error " style="display: none;">你填写内容过多，请缩减到3000字以内</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pub_replied hide answered">您已回答过本题，如有需要，可以<a href="javascript:;">修改</a>自己的答案</div>
+                        </div>
+                        <!-- reply end -->
+                    </div>
+                    <div class="bottom_fold_line"></div>
+                    <div class="bottom_fold_line"></div>
+                </div>
+            </div>
+            <!-- 问题详情 end -->
+
+            <!-- 回复列表 start -->
+            <div class="qa_replied_list">
+                <div class="qa_reserve_wrap">
+                    <div class="qa_replied_head">
+                        <div class="title"><b>{$answernum}个答案</b></div>
+                    </div>
+                    <ul class="replied_item_table">
+                        <volist name="answersData" id="vo">
+                            <li class="replied_item clearfix">
+                                <div class="pub_replier_cont_box">
+                                    <div class="pub_replier">
+                                        <div class="qa_reserve_wrap">                                           
+                                            <small class="title">{$vo.username}</small>
+                                            <small class="timestamp">{$vo.uptime}</small>
+                                        </div>
+                                    </div>
+                                    <div class="pub_replier_cont">
+                                        <p>{$vo.content}</p>
+                                    </div>    
+                                    <!--如果登陆者id和提文者id一样,就显示采纳答案-->
+                                    <eq name="tempData.user_id" value="$users.user_id">  
+                                    <div class="caina">
+                                        <a href="#"  class="btn-adopt-ask" id="">
+                                            <i class="i-round-ok"></i>
+                                            <span>采纳答案</span>
+                                        </a>
+                                    </div>
+                                    </eq>
+                                </div>
+                            </li>                            
+                        </volist>
+                    </ul>
+                </div>
+            </div>
+            <!-- 回复列表 end -->    
+        </div>
+    </div>
+</div>
+<!-- 内容区 结束-->
+
+<div class="clear"></div>
+<script type="text/javascript" src="__ROOT__/static/js/home/wenda.js"></script>
+
+<script>
+
+    $(".btn_confirm").click(function () {
+        var obj = {};
+        obj.content = $("#textarea").val();
+        obj.con_id = $("#thiscon_id").val();
+        obj.id = $("#thisid").val();
+        if (obj.content != "" && obj.con_id != "") {
+            $.post('__URL__/answersave', obj, function (data) {
+                if (data > 0) {
+                    location.reload()
+                    //alert('操作成功~');
+                } else {
+                    alert('操作失败~');
+                }
+            });
+        } else {
+            alert('提交数据不完整~');
+        }
+    });
+
+    $(".btn-adopt-ask").click(function () {
+        $.post('__URL__/answersave', obj, function (data) {
+            if (data > 0) {
+                location.reload()
+                //alert('操作成功~');
+            } else {
+                alert('操作失败~');
+            }
+        });
+    });
+</script>
+<!--  引入底部   start -->
+<include file="Common/footer" />
+<!--  引入底部   end -->
+

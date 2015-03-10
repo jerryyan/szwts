@@ -1,0 +1,56 @@
+<style>
+    #invest_form_edit_panel{margin:0;}  
+    .ftitle{font-size:14px;  font-weight:bold;  color:#666;  padding:5px 0;  margin-bottom:10px;  border-bottom:1px solid #ccc;  }  
+    .fitem{  margin-bottom:16px; clear:both; }  
+    .fitem label{  display:inline-block;  width:80px; float:left; }  
+    .fitem .itemContent{float:left;}
+</style>
+<div id="invest_form_edit_panel">
+    <div id="invest_form_edit_layout">
+        <div title="基本信息" style="padding:10px 20px;">
+
+            <div class="fitem">
+                <label>投资金额：</label>
+                <input type="text" name="amount" value="{$tempData['amount']}" size="35" />
+            </div>
+            <div class="fitem">
+                <label>年化利率：</label>
+                <input type="text" name="rate" value="{$tempData['rate']}" size="35" />
+            </div>
+            <div class="fitem">
+                <label>代收金额：</label>
+                <input type="text" name="wait_amount" value="{$tempData['wait_amount']}" size="35" />
+            </div>		
+        </div>
+    </div>
+    <div style="margin:5px 30px;">
+        <input name="id" type="hidden" value="{$tempData['order_id']}" />
+        <a id="editArticlesButton" class="easyui-linkbutton" iconCls="icon-save">保存</a> 
+    </div>
+</div>
+
+<script>
+    $("#invest_form_edit_layout").tabs();
+
+    $("#editArticlesButton").click(function () {
+        var obj = {}, panel = $("#invest_form_edit_panel");
+        obj.id = panel.find("input[name='id']").val();
+        obj.amount = panel.find("input[name='amount']").val();
+        obj.rate = panel.find("input[name='rate']").val();
+        obj.wait_amount = panel.find("input[name='wait_amount']").val();
+
+        if (obj.id !="" && obj.amount != "" && obj.rate != "" && obj.wait_amount != "") {
+            $.post('__URL__/save', obj, function (data) {
+                if (data > 0) {
+                    alert('操作成功~');
+                    $("#invest_form_edit_panel").parent().window('close');
+                    $("#invest_datagrid").datagrid('reload');
+                } else {
+                    alert('操作失败~');
+                }
+            });
+        } else {
+            alert('提交数据不完整~');
+        }
+    });
+</script>

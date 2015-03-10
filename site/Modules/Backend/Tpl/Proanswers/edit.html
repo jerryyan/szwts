@@ -1,0 +1,61 @@
+<style>
+    #proanswers_form_edit_panel{margin:0;}  
+    .ftitle{font-size:14px;  font-weight:bold;  color:#666;  padding:5px 0;  margin-bottom:10px;  border-bottom:1px solid #ccc;  }  
+    .fitem{  margin-bottom:16px; clear:both; }  
+    .fitem label{  display:inline-block;  width:80px; float:left; }  
+    .fitem .itemContent{float:left;}
+</style>
+<div id="proanswers_form_edit_panel">
+    <div id="proanswers_form_edit_layout">
+        <div title="问答类容基本信息" style="padding:10px 20px;">		
+            <div  class="fitem">
+                <label>回答内容：</label>
+                <textarea name="content" style="width:500px;height:300px;">{$tempData['content']}</textarea>
+            </div>
+            <div class="fitem">
+                <label>状态：</label>
+                <input type="radio" name="status" value="1" checked />显示&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="status" value="0" />隐藏
+            </div>
+            <div class="fitem">
+                <label>是否被采纳：</label>
+                <input type="radio" name="is_adopt" value="1" checked />是&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="is_adopt" value="0" />否
+            </div>
+        </div>	
+
+    </div>
+    <div style="margin:5px 30px;">
+        <input name="id" type="hidden" value="{$tempData['id']}" />
+        <a id="editArticlesButton" class="easyui-linkbutton" iconCls="icon-save">保存</a> 
+    </div>
+</div>
+
+<script>
+    $("#proanswers_form_edit_layout").tabs();
+    $.loadEditor($("#proanswers_form_edit_panel").find("[name='content']"));
+            $("#proanswers_form_edit_panel").find("input[name='status'][value='" + {$tempData['status'] | default = 0} + "']").attr("checked", true);
+            $("#proanswers_form_edit_panel").find("input[name='is_adopt'][value='" + {$tempData['is_adopt'] | default = 0} + "']"
+            ).attr("checked", true);
+            $("#editArticlesButton").click(function () {
+        var obj = {},
+                panel = $("#proanswers_form_edit_panel");
+        obj.id = panel.find("input[name='id']").val();
+        obj.status = panel.find("input[name='status']:checked").val();
+        obj.is_adopt = panel.find("input[name='is_adopt']:checked").val();
+        obj.content = panel.find("textarea[name='content']").val();
+        if (obj.id > 0 && obj.content != "" && obj.status != "" && obj.is_adopt != "") {
+            $.post('__URL__/save', obj, function (data) {
+                if (data > 0) {
+                    alert('操作成功~');
+                    $("#proanswers_form_edit_panel").parent().window('close');
+                    $("#proanswers_list_datagrid").datagrid('reload');
+                } else {
+                    alert('操作失败~');
+                }
+            });
+        } else {
+            alert('提交数据不完整~');
+        }
+    });
+</script>
